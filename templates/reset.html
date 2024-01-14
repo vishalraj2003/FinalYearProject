@@ -1,0 +1,25 @@
+{% include "header_main.html" %}
+<body>
+    <form id="form" method="POST"  style="font-family:Quicksand, sans-serif;background-color:rgba(44,40,52,0.73);width:320px;padding:40px;">
+{#    action="{% url 'otp-login' %}"#}
+        {% csrf_token %}
+        <h3 id="head" style="color:rgb(193,166,83);">Password Reset</h3>
+        <p style="text-align:center;">Please enter your email to reset your password.</p>
+        <div style="text-align:center;"><img class="rounded-circle img-fluid" id="image" style="width:auto;height:auto;" src="/static/assets/img/logo.png"></div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="background-color: #1a1d20; color: red; font-weight: bolder" role="alert">{{ message | safe }}</div>
+            {% endfor %}
+        {% endif %}
+    
+        <div class="form-group mb-3">
+            <input class="form-control form-control form-control form" type="email" id="formum" placeholder="Email" name="email" style="color:white;--bs-body-color:#0080ff;">
+        </div>
+        <div class="form-group mb-3"><button class="btn btn-light" id="butonas" style="width:100%;height:100%;margin-bottom:10px;background-color:rgb(106,176,209);" type="submit">Reset Password</button>
+        </div>
+        <a id="linkas" style="font-size:12px;margin:auto;margin-left:0;margin-right:0;margin-bottom:0;margin-top:0;padding-left:0;padding-right:0;color:rgb(177,151,70);filter:brightness(179%) contrast(141%);opacity:1;" href="{% url 'login' %}">Back to Login</a>
+    </form>
+    <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+

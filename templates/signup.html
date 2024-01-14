@@ -1,0 +1,79 @@
+{% include 'header_main.html' %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+<body style="background-color: #E4FAFB">
+    <form id="form" method="POST" action="/signup/" style="font-family:Quicksand, sans-serif;background-color:rgba(44,40,52,0.73);width:350px;padding:40px;">
+        {% csrf_token %}
+        <h4 id="head" style="color: rgb(193,166,83);margin-bottom: 6px;padding-bottom: 0px;padding-left: 0px;">Welcome To&nbsp;<br>Secure Investor</h4>
+        <p style="text-align: center;margin-bottom: 3px;padding-top: 0px;">Create your account now !!</p>
+        <div style="text-align:center;"><img class="rounded-circle img-fluid" id="image" style="width:auto;height:auto;" src="/static/assets/img/logo.png"></div>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="background-color: #1a1d20; color: red; font-weight: bolder" role="alert">{{ message | safe }}</div>
+            {% endfor %}
+        {% endif %}
+    
+
+    
+        
+        
+        
+        
+        <div class="form-group mb-3">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label form-label form-label" for="inputFirstName" style="padding-right: 0px;margin-right: 18px;">
+                            First Name
+                        </label>
+                        <input class="form-control form-control form-control" type="text" id="inputFirstName" name="firstName" placeholder="First Name">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label form-label form-label" for="inputLastName">
+                            Last Name
+                        </label>
+                        <input class="form-control form-control form-control" type="text" id="inputLastName" name="lastName" placeholder="Last Name">
+                    </div>
+                </div>
+            </div>
+            <form>
+                <div class="mb-3">
+                    <label class="form-label form-label form-label" for="inputEmail">Email ID</label>
+                    <input class="form-control form-control form-control" type="email" name="email" id="inputEmail" placeholder="Email ID">
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label form-label" for="inputPassword">
+                                Password
+                            </label>
+                            <input class="form-control form-control" name="password1" type="password" id="inputPassword" placeholder="Password" style="padding-left: 0px;padding-right: 0px;">
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-xxl-7" style="margin-left: -3px;">
+                        <div class="mb-3">
+                            <label class="form-label form-label" for="inputConfirmPassword">
+                                Confirm Password
+                            </label>
+                            <input class="form-control form-control" type="password" id="inputConfirmPassword" name="password2" placeholder="Confirm Password" style="padding-right: 0px;padding-left: 0px;">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="form-group mb-3 small" style="padding-right:0px;margin-right:-8px;">
+                <h6 style="color: rgb(238,2,2);font-weight: bold;">Password Policy to Follow:</h6>
+                <ul>
+                    <li style="color:rgb(241,225,85);">Passwords must be at least 8 characters long, though a length of 12 to 14 characters is recommended for enhanced security.</li>
+                    <li style="color:rgb(248,229,128);">Passwords should include a mix of uppercase letters, lowercase letters, numbers, and special characters (e.g., !, @, #, $, %).</li>
+                </ul>
+            </div><button class="btn btn-light" id="butonas" style="width:100%;height:100%;margin-bottom:10px;background-color:rgb(106,176,209);" type="submit">Sign Up</button>
+            <a id="linkas" style="font-size:12px;margin:auto;margin-left:0;margin-right:0;margin-bottom:0;margin-top:0;padding-left:0;padding-right:0;color:rgb(177,76,70);text-align:center;font-weight:bold;opacity:1;filter:brightness(169%) contrast(104%);" href="{% url 'login' %}">Already have an account? Log in</a>
+            <div></div>
+        </div>
+    </form>
+    <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+

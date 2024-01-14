@@ -1,0 +1,22 @@
+{% include 'header_main.html' %}
+    <div class="container">
+        <h1 style="color:blue;">About and Team Section</h1>
+        <p style="color:green;">Welcome to Secure investor, where innovation meets expertise. We are a dynamic group of professionals dedicated to Give tips for investing in stock market. Founded in 2000, we have consistently pushed the boundaries of technology to serve our clients better.</p>
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="my-4" style="color:red;">Our Team</h2>
+            </div>
+{#        http://placehold.it/200x200#}
+            {% for n in about_data %}
+            <div class="col-sm-6 col-lg-4 text-center mb-4">
+                <img class="rounded-circle img-fluid d-block mx-auto" src="{{ n.image.url }}" style="border:2px solid purple; background-color:lightyellow; width: 200px; height: 200px; object-fit: cover;">
+
+{#                <img class="rounded-circle img-fluid d-block mx-auto" src="{{ n.image }}" style="border:2px solid purple;background-color:lightyellow;">#}
+                <h3 class="m-0" style="color:orange;">{{ n.name }}</h3>
+                <h5 class="my-1" style="color:purple;">{{ n.title }}</h5>
+                <p style="color:brown;text-align: justify;">{{ n.description }}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>

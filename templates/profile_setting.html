@@ -1,0 +1,82 @@
+
+{% include 'header_main.html' %}
+    
+
+    <div class="col-lg-12 d-lg-flex justify-content-lg-center">
+        <div class="card shadow mb-3">
+            <div class="card-header py-3">
+                <p class="fw-bold text-primary m-0">User Settings</p>
+            </div>
+            {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" style="background-color: #1a1d20; color: red; font-weight: bolder" role="alert">{{ message | safe }}</div>
+                        {% endfor %}
+            {% endif %}
+            <div class="card-body">
+                <form method="POST" action="{% url 'profile_setting' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3"><label class="form-label form-label" for="email"><strong>Email Address</strong></label>
+                                <input class="form-control form-control" type="email" name="email" placeholder="" value="{{ email }}" readonly></div>
+                        </div>
+                    </div>
+                    {% for n in login_data %}
+                        <div>{{ n }}</div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3"><label class="form-label form-label" for="first_name"><strong>First Name</strong></label><label>
+                                <input class="form-control form-control" type="text" name="first_name" placeholder="John" value="{{ first_name }}">
+                            </label></div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3"><label class="form-label form-label" for="last_name"><strong>Last Name</strong></label>
+                                <input class="form-control form-control" type="text" name="last_name" placeholder="Doe" value="{{ last_name }}"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3"><label class="form-label form-label" for="first_name"><strong>New Password</strong><br></label>
+                                <input class="form-control form-control" name="password" type="password"></div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group mb-3"><label class="form-label form-label" for="last_name"><strong>Confirm New Password</strong><br></label>
+                                <input class="form-control form-control" name="confirmPassword" type="password"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group mb-3"><label class="form-label form-label" for="profile_pic"><strong>Profile Picture</strong></label>
+                            
+                                {% if image %}
+                                    
+                                    <img src="{{ image }}" id="profilePicPreview" alt="Current Profile Picture" style="max-width: 100px; max-height: 100px; border-radius: 50%; width: 100%; height: auto; object-fit: cover;">
+                                {% endif %}
+                                <div class="input-group">
+                                    <input class="form-control form-control" type="file" id="profile_pic" name="profile_pic" onchange="previewImage(); " required>
+
+
+                                    <label class="form-label input-group-text input-group-text" for="profile_pic">Choose File</label></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+    function previewImage() {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("profile_pic").files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            document.getElementById("profilePicPreview").src = oFREvent.target.result;
+        };
+    }
+</script>
+
+
+

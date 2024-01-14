@@ -1,0 +1,37 @@
+{% include "header_main.html" %}
+<body>
+    <form id="form" method="POST" action="{% url 'otp' %}" style="font-family:Quicksand, sans-serif;background-color:rgba(44,40,52,0.73);width:320px;padding:40px;">
+        {% csrf_token %}
+        <h3 id="head" style="color:rgb(193,166,83);">Welcome To&nbsp;<br>Secure Investor</h3>
+        <p style="text-align:center;">Please verify your email using OTP.</p>
+        <div style="text-align:center;">
+            <img class="rounded-circle img-fluid" id="image" style="width:auto;height:auto;" src="/static/assets/img/logo.png">
+        </div>
+    
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="background-color: #1a1d20; color: red; font-weight: bolder" role="alert">{{ message | safe }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        {% if email or signup_data.email %}
+        <div class="form-group mb-3">
+            <input class="form-control form-control form-control form" type="email" id="formum" placeholder="{{ email }}{{ signup_data.email }}" style="color:white;--bs-body-color:#0080ff;" readonly>
+        </div>
+        {% endif %}
+        <div class="form-group mb-3">
+            <input class="form-control form-control form-control form-controlplaceholder form" type="text" id="formum2" name="otpWeb" placeholder="Enter OTP">
+        </div>
+        <div class="form-group mb-3"></div>
+        <button class="btn btn-light" id="butonas" style="width:100%;height:100%;margin-bottom:10px;background-color:rgb(106,176,209);" type="submit">Verify</button>
+        
+{#            <a id="linkas" style="font-size:12px;margin:auto;margin-left:0;margin-right:0;margin-bottom:0;margin-top:0;padding-left:0;padding-right:0;color:rgb(177,76,70);text-align:center;font-weight:bold;opacity:1;filter:brightness(169%) contrast(104%);" href="{% url 'otp' %}">Resend OTP</a>#}
+<a id="linkas" style="font-size:12px; margin:auto; margin-left:0; margin-right:0; margin-bottom:0; margin-top:0; padding-left:0; padding-right:0; color:rgb(177,76,70); text-align:center; font-weight:bold; opacity:1; filter:brightness(169%) contrast(104%);" href="{% url 'otp' %}">Resend OTP</a>
+
+{#        {% if data_signup.page != "signup"%}#}
+            <a id="linkas" style="font-size:12px;margin:auto;margin-left:0;margin-right:0;margin-bottom:0;margin-top:0;padding-left:0;padding-right:0;color:rgb(177,151,70);filter:brightness(179%) contrast(141%);opacity:1;" href="{% url 'login' %}">Change Email</a>
+{#        {% endif %}#}
+    </form>
+    <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+

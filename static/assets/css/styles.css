@@ -1,0 +1,7 @@
+.form::placeholder {
+  color: var(--bs-border-color);
+}
+
+.custom-bg {
+}
+

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>login</title>
+    <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amita&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand&amp;display=swap">
+    <link rel="stylesheet" href="/static/assets/css/Header.css">
+    <link rel="stylesheet" href="/static/assets/css/KD_Header.css">
+    <link rel="stylesheet" href="/static/assets/css/KD_Header-Pretty-Header.css">
+    <link rel="stylesheet" href="/static/assets/css/KD_Header-user.css">
+    <link rel="stylesheet" href="/static/assets/css/OcOrato---Login-form-styles.css">
+    <link rel="stylesheet" href="/static/assets/css/OcOrato---Login-form.css">
+    <link rel="stylesheet" href="/static/assets/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md bg-body py-3">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'login' %}"><img class="rounded img-fluid" style="width:50px;" src="/static/assets/img/logo.png" width="10" height="5">
+                <h1 style="margin-left: 10px;font-family: Amita, serif;color: #f94f8e;">Secure Investor</h1>
+            </a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-2">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about_us' %}" style="font-weight: bold;">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}" style="font-style: italic;font-weight: bold;">Login</a></li>
+                </ul><a class="btn btn-primary ms-md-2" role="button" href="{% url 'signup' %}">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+    <script src="/static/assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
