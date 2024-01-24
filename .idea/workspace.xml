@@ -4,44 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="Authentication module done">
-      <change afterPath="$PROJECT_DIR$/companyData/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/migrations/0002_rename_last_price_companydata_quote_price_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/migrations/0003_companydata_description_alter_companydata_avg_volume_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companyData/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_1WuQ9dO.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_2kUBpmX.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_N4JWPVD.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_lL5n8Km.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/Screenshot_2024-01-03_064207.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/anshika_Ji9bGbR.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/meet.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/nobita.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/nobita_Bd8UxAx.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/bootstrap/js/script.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/custom.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/jump.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/jump_updated.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/list-page.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/profile_setting_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/djangoProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/djangoProject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="listing,logout and profile Setting">
+      <change beforePath="$PROJECT_DIR$/requirement.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +126,7 @@
       <workItem from="1705976024682" duration="4863000" />
       <workItem from="1706025328689" duration="17493000" />
       <workItem from="1706104135899" duration="669000" />
-      <workItem from="1706112454517" duration="8280000" />
+      <workItem from="1706112454517" duration="8781000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -180,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1705259426969</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="listing,logout and profile Setting">
+      <option name="closed" value="true" />
+      <created>1706120900935</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1706120900935</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -189,7 +161,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Authentication module done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Authentication module done" />
+    <MESSAGE value="listing,logout and profile Setting" />
+    <option name="LAST_COMMIT_MESSAGE" value="listing,logout and profile Setting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
