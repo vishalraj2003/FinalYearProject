@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="utf-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>login</title>
+    <title>Secure Investor</title>
+    <link rel="icon" href="/static/assets/img/logo.png" type="image/icon type">
     <link rel="stylesheet" href="/static/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amita&amp;display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cookie">
@@ -16,15 +18,30 @@
     <link rel="stylesheet" href="/static/assets/css/OcOrato---Login-form-styles.css">
     <link rel="stylesheet" href="/static/assets/css/OcOrato---Login-form.css">
     <link rel="stylesheet" href="/static/assets/css/styles.css">
+    <script>
+    history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+    };
+</script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-md custom-header navbar-light">
         <div class="container-fluid">
-            <div><a class="navbar-brand" href="#"><img class="img-fluid" style="width:43px;margin:-26px;margin-right:-27px;margin-top:-32px;margin-left:-33px;margin-bottom:-31px;" src="/static/assets/img/logo.png" width="auto" height="auto"><span style="margin-left:27px;font-family:'News Cycle', sans-serif;color:#f94f8e;" class="pe-0">Secure Investor</span></a><button data-bs-toggle="collapse" data-bs-target="#navbar-collapse" class="navbar-toggler mx-0 ms-0 me-0" style="margin-left:0px;padding-left:13px;"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button></div>
+            <div><a class="navbar-brand" href="{% url 'list' %}"><img class="img-fluid" style="width:43px;margin:-26px;margin-right:-27px;margin-top:-32px;margin-left:-33px;margin-bottom:-31px;" src="/static/assets/img/logo.png" width="auto" height="auto">
+                <span style="margin-left:27px;font-family:'News Cycle', sans-serif;color:#f94f8e;" class="pe-0">Secure Investor</span></a>
+                <button data-bs-toggle="collapse" data-bs-target="#navbar-collapse" class="navbar-toggler mx-0 ms-0 me-0" style="margin-left:0px;padding-left:13px;">
+                    <span class="visually-hidden">
+                        Toggle navigation
+                    </span>
+                    <span class="navbar-toggler-icon">
+                        
+                    </span></button></div>
+            
             <div class="collapse navbar-collapse justify-content-end" id="navbar-collapse">
                 <ul class="navbar-nav links">
-                    <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'list' %}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">portfolio</a></li>    
                     <li class="nav-item"><a class="nav-link" href="#"></a></li>
                     <li class="nav-item"></li>
@@ -33,14 +50,14 @@
                     <li class="nav-item dropdown" style="color:#E4FAFB;">
                         <a class="nav-link nav-link dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" href="#">
                             
-                            <img class="dropdown-image" src="{{ MEDIA_URL }}{{ image }}">
+                            <img class="dropdown-image" src="{{ request.COOKIES.image }}" alt="" />
                             
-                            <span class="dropdown-menu-name ms-3">{{ first_name}} {{last_name }}</span>
+                            <span class="dropdown-menu-name ms-3">{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" style="background-color:#E4FAFB;">
-                            <a class="dropdown-item" href="{% url 'profile_setting' %}">Settings </a> 
+                            <a class="dropdown-item" href="{% url 'profile_setting_user' %}">Profile Settings </a> 
                             <a class="dropdown-item" href="#">Payments </a>
-                            <a class="dropdown-item" href="#">Logout </a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Logout </a>
                         </div>
                     </li>
                 </ul>

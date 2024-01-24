@@ -4,87 +4,57 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/djangoProject.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/migrations/0002_about_us_model_image.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/about_us/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/migrations/0002_signupmodel_profile_pic.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/migrations/0003_alter_signupmodel_profile_pic.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/djangoProject/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/djangoProject/asgi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/djangoProject/wsgi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/about-us/anshika.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/about-us/meet.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/about-us/wepik-export-20240114080638LSH0.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/anshika.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/profile.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/vishal.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/vishal_ICXwczR.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/vishal_LzsYN5S.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/bootstrap/css/bootstrap.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/bootstrap/js/bootstrap.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/Header.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/KD_Header-Pretty-Header.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/KD_Header-user.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/KD_Header.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/OcOrato---Login-form-styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/OcOrato---Login-form.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/img/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/img/profile.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/OTP-verify-login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/OTP-verify-reset.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/OTP-verify.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/about-us.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/header_main.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/profile_setting.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/reset.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/signup.html" afterDir="false" />
+    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="Authentication module done">
+      <change afterPath="$PROJECT_DIR$/companyData/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/migrations/0002_rename_last_price_companydata_quote_price_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/migrations/0003_companydata_description_alter_companydata_avg_volume_and_more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/companyData/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_1WuQ9dO.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_2kUBpmX.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_N4JWPVD.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon_lL5n8Km.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Screenshot_2024-01-03_064207.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/anshika_Ji9bGbR.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/meet.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/nobita.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/nobita_Bd8UxAx.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirement.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/bootstrap/js/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/css/custom.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/jump.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/jump_updated.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/list-page.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/profile_setting_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/djangoProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/djangoProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaScript File" />
         <option value="HTML File" />
       </list>
     </option>
@@ -103,26 +73,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Django Server.djangoProject.executor": "Run",
-    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "django.template.preview.state": "SHOW_EDITOR",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/hp/PycharmProjects/djangoProject/templates",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.djangoProject.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject/templates&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\templates" />
@@ -177,8 +147,40 @@
       <workItem from="1705132176333" duration="31286000" />
       <workItem from="1705212132727" duration="14603000" />
       <workItem from="1705238369906" duration="8045000" />
-      <workItem from="1705248382877" duration="7941000" />
+      <workItem from="1705248382877" duration="8845000" />
+      <workItem from="1705509447069" duration="899000" />
+      <workItem from="1705577114057" duration="2054000" />
+      <workItem from="1705688330786" duration="1054000" />
+      <workItem from="1705692615868" duration="2449000" />
+      <workItem from="1705728718397" duration="17457000" />
+      <workItem from="1705767319734" duration="9116000" />
+      <workItem from="1705778138699" duration="561000" />
+      <workItem from="1705810882305" duration="2767000" />
+      <workItem from="1705837127408" duration="599000" />
+      <workItem from="1705845195875" duration="479000" />
+      <workItem from="1705847083710" duration="949000" />
+      <workItem from="1705976024682" duration="4863000" />
+      <workItem from="1706025328689" duration="17493000" />
+      <workItem from="1706104135899" duration="669000" />
+      <workItem from="1706112454517" duration="8280000" />
     </task>
+    <task id="LOCAL-00001" summary="Authentication module done">
+      <option name="closed" value="true" />
+      <created>1705259231379</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1705259231379</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Authentication module done">
+      <option name="closed" value="true" />
+      <created>1705259426969</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705259426969</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,5 +188,28 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Authentication module done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Authentication module done" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
+          <line>246</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/companyData/models.py</url>
+          <line>11</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
+          <line>444</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

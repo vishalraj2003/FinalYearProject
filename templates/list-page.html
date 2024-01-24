@@ -1,0 +1,235 @@
+{% include 'header_user.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .table td, .table th {
+            border-top: none;
+        }
+        #companyListContainer {
+            max-height: 100vh;
+            overflow-y: auto; 
+        }
+        
+        @media (min-width: 992px) { 
+            #companyListContainer {
+                max-width: 25%; 
+            }
+        }
+        
+        
+        @media (max-width: 991px) {
+            #companyListContainer {
+                max-width: 100%;
+            }
+        }
+    </style>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar / Company List -->
+
+        <div class="col-12 col-md-5 col-lg-3 vh-100 overflow-auto" id="companyListContainer">
+        <div class="input-group mb-3" id="searchContainer">
+        <form action="" method="GET">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by Company Name or Symbol" id="searchInput" name="search" value="{{ search_query }}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <a href="{% url 'list' %}" class="btn btn-outline-danger">Clear</a>
+            </div>
+        </div>
+    </form>
+    </div>
+        
+        
+        
+            <div class="list-group" id="companyList">
+                
+                {% for company in companyData %}
+                <a href="#" class="list-group-item list-group-item-action d-flex flex-wrap" data-company="{{ company.symbol }}">
+                    <div class="col-6 col-md-4 p-2 me-md-5 company-name">{{ company.companyName }}</div>
+                    <div class="col-3 col-md-4 p-2 pe-4 d-sm-block  d-none d-md-none d-lg-none company-symbol">{{ company.symbol }}</div>
+                    <div class="col-3 col-md-4  p-2 company-quote-price">{{ company.quote_price|floatformat:2 }}</div>
+                </a>
+                {% endfor %}
+            </div>
+            <div class="container-fluid">
+                <nav aria-label="...">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a class="page-link" href="/list/?page=1" tabindex="-1">First</a>
+                    </li>
+                    {% for n in page_range %}
+                    <li class="page-item {% if companyData.number == n %}active{% endif %}">
+                        <a class="page-link" href="/list/?page={{ n }}&search={{ search_query }}"> {{ n }} </a>
+                    </li>
+                    {% endfor %}
+
+                  <li class="page-item">
+                      <a class="page-link" href="/list/?page={{ last_page }}" tabindex="-1">last</a>
+                    </li>
+                  </ul>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div class="col-12 col-md-7 col-lg-9 bg-light vh-100">
+            
+            <div class="content p-4 card">
+                <h1 id="companyTitle" class="text-primary card-header text-center">Select a Company</h1>
+                <div class="card-footer text-center">
+                    <div id="companyPrice" class="text-success fw-bold fs-2"></div>
+                </div>
+                
+                <div id="description"></div>
+                <div id="plotlyGraphContainer"  class="bg-light" style="width:100%;height:500px;"></div>
+                <div id="companyDetails" class="bg-light"></div>
+                <div class="container-fluid">
+                    <div class="container">
+                        <div class="row text-uppercase bg-success align-items-center" id="tips">
+                            
+                        </div>
+                        <div class="row" id="button">
+                            
+                        </div>
+                    </div>
+                </div>
+                
+            
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap and Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+{#<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>#}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script>
+    function renderPlotlyGraph(stockData) {
+    var trace = {
+        x: stockData.date, // Array of dates
+        close: stockData.close, // Array of close prices
+        decreasing: {line: {color: 'red'}}, 
+        high: stockData.high, // Array of high prices
+        increasing: {line: {color: 'green'}}, 
+        low: stockData.low, // Array of low prices
+        open: stockData.open, // Array of open prices
+        type: 'candlestick', 
+    };
+
+    var layout = {
+        title: 'Stock Price',
+        xaxis: {
+            title: 'Date',
+            rangeslider: {
+                visible: true
+            }
+        },
+        yaxis: {
+            title: 'Price'
+        }
+    };
+
+    var data = [trace];
+
+    Plotly.newPlot('plotlyGraphContainer', data, layout);
+}
+
+    $(document).ready(function() {
+        $('#searchInput').on('keyup', function() {
+            var value = $(this).val().toLowerCase();
+            $("#companyList a").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+        $('#clearSearch').click(function() {
+            $('#searchInput').val('');
+            window.location.href = '{% url 'list' %}';
+        });
+    $('#companyList a').on('click', function(e) {
+        e.preventDefault();
+        const symbol = $(this).data('company');
+        $.ajax({
+            url: `/api/company/${symbol}/`,  // Make sure to use the correct URL
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Update the table with the returned data
+                $('#companyTitle').text(`${data.companyName} (${data.symbol})`);
+                $('#companyPrice').text(`₹${parseFloat(data.quote_price).toFixed(2)}`);
+                $('#description').html(`
+                    <h3 class="text-info">Description</h3>
+                    <p class="text-break text-justify">${data.description}</p>
+                `);
+                $('#companyDetails').html(`
+                    <h3 class="text-info">Tabular summary</h3>
+                <div class="container mt-5">
+                    <div class="row">
+                        <div class="col">
+                            <table class="table bg-light">
+                                <tbody>
+                                    <tr><td>Previous Close</td><td>${data.previous_close}</td></tr>
+                                    <tr><td>Open</td><td>${data.open_price}</td></tr>
+                                    <tr><td>Bid</td><td>${data.bid}</td></tr>
+                                    <tr><td>Ask</td><td>${data.ask}</td></tr>
+                                    <tr><td>Day's Range</td><td>${data.days_range}</td></tr>
+                                    <tr><td>52 Week Range</td><td>${data.fifty_two_week_range}</td></tr>
+                                    <tr><td>Volume</td><td>${data.volume}</td></tr>
+                                    <tr><td>Avg. Volume</td><td>${data.avg_volume}</td></tr>
+                                </tbody>
+                                 </table>
+                            </div>
+                            <div class="col">
+                                <table class="table">
+                                <tbody>
+                                    <tr><td>Market Cap</td><td>${data.market_cap}</td></tr>
+                                    <tr><td>Beta (5Y Monthly)</td><td>${data.beta_5y_monthly}</td></tr>
+                                    <tr><td>PE Ratio (TTM)</td><td>${data.pe_ratio_ttm}</td></tr>
+                                    <tr><td>EPS (TTM)</td><td>${data.eps_ttm}</td></tr>
+                                    <tr><td>Earnings Date</td><td>${data.earnings_date}</td></tr>
+                                    <tr><td>Forward Dividend & Yield</td><td>${data.forward_dividend_yield}</td></tr>
+                                    <tr><td>Ex-Dividend Date</td><td>${data.ex_dividend_date}</td></tr>
+                                    <tr><td>1y Target Est</td><td>${data.one_year_target_est}</td></tr>
+                                    <!-- ... more fields if needed -->
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+                `);
+                $('#tips').html(`<br><h4 class="text-center">Tips will be shown over here.</h4><br>`);
+                $('#button').html(`
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button class="btn btn-primary btn-lg font-weight-bold">Buy</button>
+          
+                        <button class="btn btn-danger btn-lg font-weight-bold">Sell</button>
+                    </div>
+                `);
+                renderPlotlyGraph(data.stockData);
+            },
+            error: function(error) {
+                console.log(error);
+                $('#companyDetails').html(`<p>Error fetching data for ${symbol}</p>`);
+            }
+        });
+    });
+});
+
+</script>
+</body>

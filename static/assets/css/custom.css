@@ -1,0 +1,7 @@
+@media (max-width: 768px) {
+    .company-name, .company-symbol, .company-quote-price {
+        font-size: 0.9em; /* Adjust font size */
+        padding: 5px; /* Adjust padding */
+    }
+
+}

@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'stockMarket.apps.StockmarketConfig',
     'authentication_module',
-    'about_us'
+    'about_us',
+    'companyData'
 
 ]
 
@@ -133,8 +134,8 @@ MEDIA_URL = '/media/'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'vishalraj20@gnu.ac.in'
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'meetapatel20@gnu.ac.in'
+EMAIL_HOST_PASSWORD = 'gnu15102020'
 EMAIL_USE_TLS = True
 
 # Default primary key field type

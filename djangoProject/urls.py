@@ -34,8 +34,14 @@ urlpatterns = [
     path('otp-verify-login-login/', views.otp_login_login, name='otp-login-login'),
     path('signup/', views.signup, name='signup'),
     path('profile_setting/', views.profile_setting, name='profile_setting'),
+    path('profile_setting_user/', views.profile_setting_user, name='profile_setting_user'),
     path('user/', views.user, name='user'),
     path('', views.about_us, name='about_us'),
+    path('list/', views.listing, name='list'),
+    path('logout/', views.logout, name='logout'),
+    path('jump/', views.jump, name='jump'),
+    path('jump_updated/', views.jump_updated, name='jump_updated'),
+    path('api/company/<str:symbol>/', views.get_company_data, name='get_company_data'),
 ]
 
 if settings.DEBUG:
