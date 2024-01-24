@@ -1,4 +1,4 @@
-Django>=5.0,<5.0
+Django>=5.0
 djangorestframework>=3.12
 requests>=2.25
 yfinance>=0.1.59
