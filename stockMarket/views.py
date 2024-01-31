@@ -5,9 +5,9 @@ import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-
+from django.utils import timezone
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from authentication_module import models
@@ -28,12 +28,99 @@ import warnings
 from django.core.paginator import Paginator
 from functools import wraps
 
+from transaction.models import Transaction
+from authentication_module.models import signupModel
+from django.db.models import Sum
+from django.db.models import F, Sum, ExpressionWrapper, DecimalField
+
 
 # from django.http import HttpResponse
 
 
 # Create your views here.
 # context = {}
+
+def portfolioView(request):
+    user_email = request.COOKIES.get('email')
+    if user_email:
+        transactions = (Transaction.objects.filter(user=user_email)
+                        .values('company_symbol')
+                        .annotate(total_quantity=Sum('quantity'),
+                                  total_amount=Sum(ExpressionWrapper(F('quantity') * F('price_per_unit'),
+                                                                     output_field=DecimalField())))
+                        .order_by('company_symbol', 'transaction_type'))
+        context ={
+            'transactions': transactions
+        }
+        return render(request, 'portfolio.html',context)
+    return render(request, 'portfolio.html')
+def can_user_sell(request, company_symbol):
+    user_email = request.COOKIES.get('email', '')
+    user = get_object_or_404(signupModel, email=user_email)
+
+    # Check if the user has any buy transactions for this company
+    has_transactions = Transaction.objects.filter(user=user.email, company_symbol=company_symbol,
+                                                  transaction_type='buy').exists()
+
+    return JsonResponse({'canSell': has_transactions})
+
+def buy_stock(request, company_symbol):
+    if request.method == "POST":
+
+        company = get_object_or_404(companyData, symbol=company_symbol)
+        user_email = request.COOKIES.get('email', '')
+        user_inner = get_object_or_404(signupModel, email=user_email)
+
+        try:
+            quantity = int(request.POST.get("quantity"))
+            price_per_unit = round(float(company.quote_price), 2)
+            total_cost = quantity * price_per_unit
+
+            if float(user_inner.credit_balance) >= float(total_cost):
+                user_inner.credit_balance = float(user_inner.credit_balance) - float(total_cost)
+                user_inner.save()
+                print("company name:",company.companyName)
+                transaction = Transaction(
+                    user=user_inner.email,
+                    company_symbol=company_symbol,
+                    transaction_type='buy',
+                    quantity=quantity,
+                    price_per_unit=price_per_unit
+                )
+                transaction.save()
+
+                messages.success(request, "Stock purchased successfully.")
+                # return redirect('transaction', company_symbol=company_symbol)
+                return JsonResponse({'message': "Stock purchased successfully."})
+            else:
+                return JsonResponse({'message': "Insufficient credit balance."})
+
+        except Exception as e:
+            return JsonResponse({'message': f"An error occurred: {str(e)}"})
+
+    return JsonResponse({'message': "Invalid request method."})
+    #     else:
+    #         messages.error(request, "Insufficient credit balance.")
+    #         redirect('transaction', company_symbol=company_symbol)
+    # else:
+    #     return redirect('transaction', company_symbol=company_symbol)
+
+
+def transaction_page(request):
+    company_symbol = request.GET.get('company_symbol')
+    print(company_symbol)
+    print("Company Symbol Received:", company_symbol)  # Debug print
+    company = get_object_or_404(companyData, symbol=company_symbol)
+    user_email = request.COOKIES.get('email', '')
+    user_inner = get_object_or_404(signupModel, email=user_email)
+
+    context = {
+        'company': company,
+        'user': user_inner
+    }
+
+    return render(request, 'transaction.html', context)
+
 
 def logout(request):
     response = HttpResponseRedirect(reverse('login'))
@@ -47,6 +134,8 @@ def logout(request):
     response["Pragma"] = "no-cache"  # HTTP 1.0
     response["Expires"] = "0"  # Proxies
     return response
+
+
 # login fix
 def login_required_cookie(view_func):
     @wraps(view_func)
@@ -122,6 +211,7 @@ def jump(request):
 
     return render(request, 'jump.html')
 
+
 def jump_updated(request):
     response = HttpResponseRedirect(reverse('login'))
     response.delete_cookie('email')
@@ -135,8 +225,6 @@ def jump_updated(request):
     response["Expires"] = "0"  # Proxies
 
     return response
-
-
 
 
 def listing(request):
@@ -202,7 +290,7 @@ def update_nifty50():
             ticker = yf.Ticker(symbol)
             info = ticker.info
             # company_instance = companyData()
-
+            quote_price = str(round(float(data.get('Quote Price', 0)), 2))
             defaults = {
                 'companyName': str(info['longName']),
                 'one_year_target_est': data.get('1y Target Est', ''),
@@ -220,7 +308,7 @@ def update_nifty50():
                 'open_price': data.get('Open', ''),
                 'pe_ratio_ttm': data.get('PE Ratio (TTM)', ''),
                 'previous_close': data.get('Previous Close', ''),
-                'quote_price': data.get('Quote Price', ''),
+                'quote_price': quote_price,
                 'volume': data.get('Volume', ''),
                 'description': str(info['longBusinessSummary'])
             }
@@ -329,9 +417,6 @@ def otp_login_login(request):
             return render(request, 'OTP-verify-login.html', login_data)
 
 
-
-
-
 def user(request):
     if is_user_logged_in(request):
         return redirect('list')
@@ -349,7 +434,7 @@ def about_us(request):
     data = {
         'about_data': about_data
     }
-    # update_nifty50()
+    update_nifty50()
     return render(request, 'about-us.html', data)
 
 

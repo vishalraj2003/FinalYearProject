@@ -1,0 +1,87 @@
+{% include 'header_user.html' %}
+
+<div class="container-fluid">
+        <div class="container d-flex justify-content-center" >
+            <div class="row d-flex justify-content-center">
+            <div class="col-lg col-md col-sm">
+            <div class="card" >
+              <div class="card-body">
+                <h5 class="card-title text-center">{{ company.companyName }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted text-center">{{ company.symbol }}</h6>
+                  <hr style="background-color: #0f5132; height: 2px">
+                      <div class="input-group ">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text bg-dark text-info" id="">Your balance</span>
+                          </div>
+                          <input type="number" class="form-control bg-primary fw-bolder " readonly placeholder="{{ user.credit_balance }}">
+                        </div>
+{#                  </ul>#}
+{#                  <ul class="list-group list-group-flush">#}
+                      <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text bg-dark text-info" id="">Current stock Price</span>
+                          </div>
+                          <input type="number" class="form-control bg-primary fw-bolder" readonly placeholder="{{ company.quote_price }}">
+                        </div>
+{#                  </ul>#}
+{#                  <ul class="list-group list-group-flush">#}
+                  <form id="purchaseForm" action="{% url 'buy_stock' company.symbol %}" method="post">
+                      {% csrf_token %}
+                      <div class="input-group">
+                          <div class="input-group-prepend ">
+                            <span class="input-group-text bg-dark text-info" id="">Quantity:</span>
+                          </div>
+                          <input type="number" id="quantity" name="quantity" class="form-control bg-primary fw-bolder text-warning"  value="1" min="1" required>
+                        </div>
+{#                  </ul>#}
+                  <hr style="background-color: #0f5132; height: 2px">
+                <div class="d-flex justify-content-center align-items-center">
+                        <button class="btn btn-primary btn-lg font-weight-bold" type="submit">Confirm Buy</button>
+                </div>
+{#                        <button class="btn btn-danger btn-lg font-weight-bold">Sell</button>#}
+                    
+                            <div  id="messageContainer" class=" alert alert-success" style="display: none;"></div>
+                    
+
+                    
+                  </form>
+              </div>
+            </div>
+            </div>
+            </div>
+
+    </div>
+            </div>
+        </div>
+</div>
+<script>
+    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        
+        fetch("{% url 'buy_stock' company.symbol %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            var messageContainer = document.getElementById('messageContainer');
+            messageContainer.innerHTML = ''; // Clear previous messages
+            
+            // Assuming the response data contains a field 'message'
+            if (data.message) {
+                showMessage(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+    function showMessage(message) {
+        var messageContainer = document.getElementById('messageContainer');
+        messageContainer.textContent = message;
+        messageContainer.style.display = 'block';
+    }
+</script>
+

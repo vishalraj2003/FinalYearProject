@@ -42,6 +42,9 @@ urlpatterns = [
     path('jump/', views.jump, name='jump'),
     path('jump_updated/', views.jump_updated, name='jump_updated'),
     path('api/company/<str:symbol>/', views.get_company_data, name='get_company_data'),
+    path('transaction/', views.transaction_page, name='transaction'),
+    path('buy/<str:company_symbol>/', views.buy_stock, name='buy_stock'),
+    path('portfolio/', views.portfolioView, name='portfolio'),
 ]
 
 if settings.DEBUG:

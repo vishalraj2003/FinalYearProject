@@ -1,0 +1,45 @@
+{% include 'header_user.html' %}
+<head>
+<style>
+    .my-custom-table td, .my-custom-table th {
+        {#padding: 0.3rem;#}
+        padding-right: 2px;
+        padding-left: 2px;
+    }
+</style>
+    <title></title>
+</head>
+<body>
+<div class="container-fluid ">
+    <div class="container">
+        <h1 class="card-header bg-dark text-info text-center mb-5">{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }} has following stocks: </h1>
+        <div class="table-responsive ">
+        <table class="table table-striped my-custom-table">
+              <thead>
+                <tr>
+                  <th scope="col">User name</th>
+                  <th scope="col">Company symbol</th>
+{#                  <th scope="col">Transaction type</th>#}
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total Price</th>
+{#                  <th scope="col">Transaction date</th>#}
+                </tr>
+              </thead>
+                {% for transaction in transactions %}
+{#                    {% print(transaction) %} #}
+              <tbody>
+                <tr>
+                  <td>{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }}</td>
+                  <td>{{ transaction.company_symbol }}</td>
+{#                  <td>{{ transaction.transaction_type }}</td>#}
+                  <td>{{ transaction.total_quantity }}</td>
+                  <td>{{ transaction.total_amount|floatformat:2 }}</td>
+{#                  <td>@mdo</td>#}
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        </div>
+</div>
+</body>

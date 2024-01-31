@@ -4,4 +4,7 @@
 
 .custom-bg {
 }
+.custom-placeholder::placeholder {
+    color: red;
+}
 

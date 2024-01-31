@@ -14,10 +14,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='signupModel',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,  serialize=False, verbose_name='ID')),
                 ('first_name', models.CharField(max_length=50)),
                 ('last_name', models.CharField(max_length=50)),
-                ('email', models.EmailField(max_length=254, unique=True)),
+                ('email', models.EmailField(max_length=254, primary_key=True, unique=True)),
                 ('password', models.CharField(max_length=30)),
             ],
         ),
