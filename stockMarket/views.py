@@ -1,6 +1,8 @@
 import random
 from math import ceil
+from decimal import Decimal
 
+import pandas as pd
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -32,6 +34,10 @@ from transaction.models import Transaction
 from authentication_module.models import signupModel
 from django.db.models import Sum
 from django.db.models import F, Sum, ExpressionWrapper, DecimalField
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
+from updateTracker.models import UpdateTracker
 
 
 # from django.http import HttpResponse
@@ -40,29 +46,142 @@ from django.db.models import F, Sum, ExpressionWrapper, DecimalField
 # Create your views here.
 # context = {}
 
+
+def stock_details(request, company_symbol):
+    # Fetch transactions and company data
+    transactions = Transaction.objects.filter(company_symbol=company_symbol).values()
+    company = get_object_or_404(companyData, symbol=company_symbol)
+
+    # Convert to DataFrame
+    df = pd.DataFrame(list(transactions))
+
+    if not df.empty:
+        # Ensure 'transaction_date' is a datetime type
+        df['transaction_date'] = pd.to_datetime(df['transaction_date'])
+        # Ensure 'quantity' and 'price_per_unit' are numeric
+        df['quantity'] = pd.to_numeric(df['quantity'], errors='coerce')
+        df['price_per_unit'] = pd.to_numeric(df['price_per_unit'], errors='coerce')
+
+        # Separate dataframes for buy and sell transactions
+        df_buy = df[df['transaction_type'] == 'buy']
+        df_sell = df[df['transaction_type'] == 'sell']
+
+        # Plotting
+        plt.figure(figsize=(10, 6))
+
+        # Plot Buy Transactions
+        if not df_buy.empty:
+            plt.plot(df_buy['transaction_date'], df_buy['price_per_unit'], label='Buy', marker='o', linestyle='-',
+                     color='green')
+
+        # Plot Sell Transactions
+        if not df_sell.empty:
+            plt.plot(df_sell['transaction_date'], df_sell['price_per_unit'], label='Sell', marker='x', linestyle='-',
+                     color='red')
+
+        plt.title(f'Transaction Prices for {company.companyName}')
+        plt.xlabel('Date')
+        plt.ylabel('Price Per Unit')
+        plt.legend()
+
+        # Convert plot to PNG image
+        buf = BytesIO()
+        plt.savefig(buf, format='png', bbox_inches='tight')
+        plt.close()
+        image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+        buf.close()
+    else:
+        image_base64 = None
+
+    context = {
+        'company_symbol': company_symbol,
+        'image_base64': image_base64,
+    }
+
+    return render(request, 'stock_details.html', context)
+
 def portfolioView(request):
     user_email = request.COOKIES.get('email')
+    if not user_email:
+        # Handle user not logged in scenario
+        return render(request, 'login.html')
     if user_email:
-        transactions = (Transaction.objects.filter(user=user_email)
-                        .values('company_symbol')
-                        .annotate(total_quantity=Sum('quantity'),
-                                  total_amount=Sum(ExpressionWrapper(F('quantity') * F('price_per_unit'),
-                                                                     output_field=DecimalField())))
-                        .order_by('company_symbol', 'transaction_type'))
-        context ={
-            'transactions': transactions
+        transactions = Transaction.objects.filter(user=user_email).values(
+            'company_symbol', 'transaction_type'
+        ).annotate(
+            total_quantity=Sum('quantity'),
+            total_amount=Sum(ExpressionWrapper(F('quantity') * F('price_per_unit'), output_field=DecimalField())),
+        ).order_by('company_symbol', 'transaction_type')
+        total_profit_loss = 0
+        portfolio = []
+        for trans in transactions:
+            company = companyData.objects.get(symbol=trans['company_symbol'])
+            # Calculate profit or loss
+            current_price = Decimal(company.quote_price)  # Assuming this is the current stock price
+            total_investment = trans['total_amount']
+            market_value = trans['total_quantity'] * current_price
+            profit_loss = market_value - total_investment
+            if trans['transaction_type'] == 'buy':
+                total_profit_loss += profit_loss
+            portfolio.append({
+                'company_name': company.companyName,
+                'symbol': trans['company_symbol'],
+                'quantity': trans['total_quantity'],
+                'transaction_type': trans['transaction_type'],
+                'total_investment': total_investment,
+                'current_price': current_price,
+                'market_value': market_value,
+                'profit_loss': profit_loss,
+                'profit_loss_color': 'green' if profit_loss > 0 else 'red',
+            })
+        context = {
+            'portfolio': portfolio,
+            'total_profit_loss': total_profit_loss,
         }
-        return render(request, 'portfolio.html',context)
+        return render(request, 'portfolio.html', context)
     return render(request, 'portfolio.html')
-def can_user_sell(request, company_symbol):
-    user_email = request.COOKIES.get('email', '')
-    user = get_object_or_404(signupModel, email=user_email)
 
-    # Check if the user has any buy transactions for this company
-    has_transactions = Transaction.objects.filter(user=user.email, company_symbol=company_symbol,
-                                                  transaction_type='buy').exists()
 
-    return JsonResponse({'canSell': has_transactions})
+def sell_stock(request, company_symbol):
+    if request.method == "POST":
+        user_email = request.COOKIES.get('email')
+        user = get_object_or_404(signupModel, email=user_email)
+        quantity_to_sell = int(request.POST.get("quantity"))
+        company = get_object_or_404(companyData, symbol=company_symbol)
+
+        # Calculate total quantity bought and sold for the company
+        bought_quantity = \
+            Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
+                                       transaction_type='buy').aggregate(
+                total_bought=Sum('quantity'))['total_bought'] or 0
+        sold_quantity = \
+            Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
+                                       transaction_type='sell').aggregate(
+                total_sold=Sum('quantity'))['total_sold'] or 0
+
+        available_to_sell = bought_quantity - sold_quantity
+
+        if available_to_sell >= quantity_to_sell:
+            # Get current stock price
+            current_price = float(company.quote_price)
+            total_sale_amount = quantity_to_sell * current_price
+
+            # Update user's balance
+            user.credit_balance = F('credit_balance') + total_sale_amount
+            user.save()
+            Transaction.objects.create(
+                user=user_email,
+                company_symbol=company_symbol,
+                transaction_type='sell',
+                quantity=quantity_to_sell,
+                price_per_unit=current_price
+            )
+            return JsonResponse({"message": "Stock sold successfully.", "status": "success"})
+        else:
+            return JsonResponse({"message": "You do not own enough stock to sell this quantity.", "status": "error"})
+    else:
+        return JsonResponse({"message": "Invalid request method.", "status": "error"})
+
 
 def buy_stock(request, company_symbol):
     if request.method == "POST":
@@ -79,7 +198,7 @@ def buy_stock(request, company_symbol):
             if float(user_inner.credit_balance) >= float(total_cost):
                 user_inner.credit_balance = float(user_inner.credit_balance) - float(total_cost)
                 user_inner.save()
-                print("company name:",company.companyName)
+                print("company name:", company.companyName)
                 transaction = Transaction(
                     user=user_inner.email,
                     company_symbol=company_symbol,
@@ -89,7 +208,7 @@ def buy_stock(request, company_symbol):
                 )
                 transaction.save()
 
-                messages.success(request, "Stock purchased successfully.")
+                # messages.success(request, "Stock purchased successfully.")
                 # return redirect('transaction', company_symbol=company_symbol)
                 return JsonResponse({'message': "Stock purchased successfully."})
             else:
@@ -120,6 +239,22 @@ def transaction_page(request):
     }
 
     return render(request, 'transaction.html', context)
+
+
+def transaction_page_sell(request):
+    company_symbol = request.GET.get('company_symbol')
+    print(company_symbol)
+    print("Company Symbol Received:", company_symbol)  # Debug print
+    company = get_object_or_404(companyData, symbol=company_symbol)
+    user_email = request.COOKIES.get('email', '')
+    user_inner = get_object_or_404(signupModel, email=user_email)
+
+    context = {
+        'company': company,
+        'user': user_inner
+    }
+
+    return render(request, 'transaction_sell.html', context)
 
 
 def logout(request):
@@ -241,7 +376,18 @@ def listing(request):
     else:
         companies = companyData.objects.all().values('companyName', 'symbol', 'quote_price')
 
-    # companies = companyData.objects.all().values('companyName', 'symbol', 'quote_price')
+    print("test:", companies)
+
+    for company in companies:
+        company['user_owns'] = False
+        print(request.COOKIES.get('email'), company['symbol'])
+        company['user_owns'] = Transaction.objects.filter(
+            user=request.COOKIES.get('email'),
+            company_symbol=company['symbol'],
+            transaction_type='buy'
+        ).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+        print("value of owner:", company['user_owns'])
+
     paginator = Paginator(companies, 6)
     page_number = request.GET.get('page', 1)
     current_page = paginator.get_page(page_number)
@@ -265,12 +411,13 @@ def listing(request):
     # loginData = request.session.get('loginData')
     # print("login data is",loginData)
     page_range = range(start_page, end_page + 1)
-
+    print("value of owner (final):", company['user_owns'])
     data = {
         'companyData': current_page,
         'last_page': totalpage,
         'page_range': page_range,
-        'search_query': search_query
+        'search_query': search_query,
+        'companyData2': companies,
     }
 
     # print(request.session.get('loginData'))
@@ -434,8 +581,24 @@ def about_us(request):
     data = {
         'about_data': about_data
     }
-    update_nifty50()
+    daily_update_nifty50()
     return render(request, 'about-us.html', data)
+
+
+def should_run_update_nifty50():
+    today = datetime.now().date()
+    last_run_record, created = UpdateTracker.objects.get_or_create(last_run_date=today)
+    if created:
+        # Function has not run today
+        return True
+    else:
+        # Function has already run today
+        return False
+
+
+def daily_update_nifty50():
+    if should_run_update_nifty50():
+        update_nifty50()
 
 
 def profile_setting_user(request):

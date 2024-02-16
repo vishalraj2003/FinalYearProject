@@ -1,0 +1,9 @@
+{% include 'header_user.html' %}
+<h2>Stock Details for {{ company_symbol }}</h2>
+{% if image_base64 %}
+    <img src="data:image/png;base64,{{ image_base64 }}" alt="Stock Transactions Graph">
+{% else %}
+    <p>No transaction data available.</p>
+{% endif %}
+
+

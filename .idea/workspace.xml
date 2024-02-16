@@ -4,33 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="All set">
-      <change afterPath="$PROJECT_DIR$/authentication_module/migrations/0004_signupmodel_credit_balance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/authentication_module/migrations/0005_alter_signupmodel_email.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/portfolio.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/test.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/transaction.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/migrations/0002_alter_transaction_user.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/migrations/0003_remove_transaction_company_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/views.py" afterDir="false" />
+    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="added buy data and also given portfolio data">
+      <change afterPath="$PROJECT_DIR$/companyData/migrations/0004_alter_companydata_symbol.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stock_details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/transaction_sell.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/transaction/migrations/0004_alter_transaction_company_symbol.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/updateTracker/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authentication_module/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication_module/migrations/0001_initial.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authentication_module/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication_module/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/companyData/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/companyData/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/assets/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stockMarket/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/list-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/list-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/portfolio.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/portfolio.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +68,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject/media/profile_pics&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject/templates&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -84,8 +79,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\hp\PycharmProjects\djangoProject\media\profile_pics" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\templates" />
+      <recent name="C:\Users\hp\PycharmProjects\djangoProject\media\profile_pics" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\static" />
     </key>
   </component>
@@ -159,7 +154,11 @@
       <workItem from="1706651826213" duration="546000" />
       <workItem from="1706674697782" duration="864000" />
       <workItem from="1706716167957" duration="608000" />
-      <workItem from="1706727772983" duration="10982000" />
+      <workItem from="1706727772983" duration="12520000" />
+      <workItem from="1707294094031" duration="603000" />
+      <workItem from="1707571267746" duration="8372000" />
+      <workItem from="1707637133704" duration="16076000" />
+      <workItem from="1707981436443" duration="3384000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -225,7 +224,23 @@
       <option name="project" value="LOCAL" />
       <updated>1706127427462</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="added buy data and also given portfolio data">
+      <option name="closed" value="true" />
+      <created>1706739136502</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1706739136502</updated>
+    </task>
+    <task id="LOCAL-00010" summary="added buy data and also given portfolio data">
+      <option name="closed" value="true" />
+      <created>1706739156009</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1706739156009</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,7 +252,8 @@
     <MESSAGE value="listing,logout and profile Setting" />
     <MESSAGE value="change in django version" />
     <MESSAGE value="All set" />
-    <option name="LAST_COMMIT_MESSAGE" value="All set" />
+    <MESSAGE value="added buy data and also given portfolio data" />
+    <option name="LAST_COMMIT_MESSAGE" value="added buy data and also given portfolio data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

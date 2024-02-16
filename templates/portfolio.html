@@ -13,29 +13,92 @@
 <div class="container-fluid ">
     <div class="container">
         <h1 class="card-header bg-dark text-info text-center mb-5">{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }} has following stocks: </h1>
+
+{#    buy part#}
+    <h2 class="text-center text-success">Buy Transactions</h2>
         <div class="table-responsive ">
         <table class="table table-striped my-custom-table">
               <thead>
                 <tr>
-                  <th scope="col">User name</th>
+                  <th scope="col">Company Name</th>
                   <th scope="col">Company symbol</th>
-{#                  <th scope="col">Transaction type</th>#}
+                  <th scope="col">Transaction type</th>
                   <th scope="col">Quantity</th>
-                  <th scope="col">Total Price</th>
-{#                  <th scope="col">Transaction date</th>#}
+                  <th scope="col">Total Investment</th>
+                  <th scope="col">Current Price</th>
+                  <th scope="col">Market value of stock</th>
+                  <th scope="col">Current Profit/Loss</th>
+                  <th scope="col">More details</th>
                 </tr>
               </thead>
-                {% for transaction in transactions %}
+                {% for item in portfolio %}
+                {% if item.transaction_type == 'buy' %}
 {#                    {% print(transaction) %} #}
               <tbody>
-                <tr>
-                  <td>{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }}</td>
-                  <td>{{ transaction.company_symbol }}</td>
-{#                  <td>{{ transaction.transaction_type }}</td>#}
-                  <td>{{ transaction.total_quantity }}</td>
-                  <td>{{ transaction.total_amount|floatformat:2 }}</td>
-{#                  <td>@mdo</td>#}
+                    <tr>
+                    <td>{{ item.company_name }}</td>
+                    <td>{{ item.symbol }}</td>
+                        <td>{{ item.transaction_type }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.total_investment|floatformat:2 }}</td>
+                    <td>₹{{ item.current_price|floatformat:2 }}</td>
+                    <td>₹{{ item.market_value|floatformat:2 }}</td>
+                    <td style="color: {{ item.profit_loss_color }}">₹{{ item.profit_loss|floatformat:2 }}</td>
+
+                        <td>
+                        <a href="{% url 'stock_details' item.symbol %}" class="btn btn-success">More details</a>
+                    </td>
                 </tr>
+
+                    {% endif %}
+                {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="1" class="text-right bg-dark text-info"><strong>Total Profit/Loss:</strong></td>
+                        <td class="text-right bg-dark font-weight-bold" {% if total_profit_loss >= 0 %}style="color: green;"{% else %}style="color: red;"{% endif %}><strong>₹{{ total_profit_loss|floatformat:2 }}</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+<h2 class="text-center text-success">Sell Transactions</h2>
+        <div class="table-responsive ">
+        <table class="table table-striped my-custom-table">
+              <thead>
+                <tr>
+                  <th scope="col">Company Name</th>
+                  <th scope="col">Company symbol</th>
+                  <th scope="col">Transaction type</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total Investment</th>
+{#                  <th scope="col">Current Price</th>#}
+{#                  <th scope="col">Market value of stock</th>#}
+{#                  <th scope="col">Current Profit/Loss</th>#}
+                  <th scope="col">More details</th>
+                </tr>
+              </thead>
+                {% for item in portfolio %}
+                {% if item.transaction_type == 'sell' %}
+              <tbody>
+                    <tr>
+                    <td>{{ item.company_name }}</td>
+                    <td>{{ item.symbol }}</td>
+                        <td>{{ item.transaction_type }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.total_investment|floatformat:2 }}</td>
+{#                    <td>₹{{ item.current_price|floatformat:2 }}</td>#}
+{#                    <td>₹{{ item.market_value|floatformat:2 }}</td>#}
+{#                    <td style="color: {{ item.profit_loss_color }}">₹{{ item.profit_loss|floatformat:2 }}</td>#}
+                    <td>
+                        <a href="{% url 'stock_details' item.symbol %}" class="btn btn-success">More details</a>
+                    </td>
+                </tr>
+                {% endif %}
                 {% endfor %}
                 </tbody>
             </table>

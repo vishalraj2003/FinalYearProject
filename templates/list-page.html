@@ -101,6 +101,9 @@
 
                     </div>
                 </div>
+
+
+
                 
             
 
@@ -168,28 +171,7 @@
     $('#companyList a').on('click', function(e) {
         e.preventDefault();
         const symbol = $(this).data('company');
-        $.ajax({
-                url: `/can_user_sell/${symbol}/`,  // URL to your new Django view
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    let sellButtonHtml = response.canSell ? 
-                        `<button type="submit" class="btn btn-danger btn-lg font-weight-bold">Sell</button>` :
-                        `<button type="submit" class="btn btn-danger btn-lg font-weight-bold" disabled>Sell</button>`;
-
-                    $('#button').html(`
-                        <form action="{% url 'transaction' %}" method="get">
-                            <input type="hidden" readonly name="company_symbol" id="companySymbolInput">
-                            <button type="submit" class="btn btn-primary">Buy</button>
-                            ${sellButtonHtml}
-                        </form>
-                    `);
-                    $('#companySymbolInput').val(symbol);
-                },
-                error: function(error) {
-                    console.log('Error checking sell eligibility:', error);
-                }
-            });
+        
 
         $.ajax({
             url: `/api/company/${symbol}/`,  // Make sure to use the correct URL
@@ -204,10 +186,12 @@
                     <p class="text-break text-justify">${data.description}</p>
                 `);
                 $('#companyDetails').html(`
+{#                    ;#}
                     <h3 class="text-info">Tabular summary</h3>
                 <div class="container mt-5">
                     <div class="row">
                         <div class="col">
+
                             <table class="table bg-light">
                                 <tbody>
                                     <tr><td>Previous Close</td><td>${data.previous_close}</td></tr>
@@ -243,18 +227,33 @@
                 $('#currentPriceInput').val(parseFloat(data.quote_price).toFixed(2));
                 $('#button').html(`
 {#                    {% include 'transaction.html' %}#}
-                    
-                      <form action="{% url 'transaction'  %}" method="get">
-                        
-                        <input type="hidden" readonly name="company_symbol" id="companySymbolInput">
-                        {#<p>sysmbol is ${data.symbol}</p>#}
-                        <button type="submit" class="btn btn-primary">Buy</button>
-                       
-                        {#<button type="submit" class="btn btn-danger btn-lg font-weight-bold">Sell</button>#}
-                        </form>
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <form action="{% url 'transaction'  %}" method="get">
+
+                                <input type="hidden" readonly name="company_symbol" id="companySymbolInput">
+                                {#<p>sysmbol is ${data.symbol}</p>#}
+                                <button type="submit" class="btn-lg btn-primary">Buy</button>
+
+                                {#<button type="submit" class="btn btn-danger btn-lg font-weight-bold">Sell</button>#}
+                                </form>
+                            </div>
+                            <div class="col-auto">
+                                <form action="{% url 'transaction_sell'  %}" method="get">
+
+                                     <input type="hidden" readonly name="company_symbol" id="companySymbolInput2">
+                                    {#<p>sysmbol is ${data.symbol}</p>#}
+                                    <button type="submit" class="btn-lg btn-danger">Sell</button>
+
+                                    {#<button type="submit" class="btn btn-danger btn-lg font-weight-bold">Sell</button>#}
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 `);
                 $('#companySymbolInput').val(data.symbol);
+                $('#companySymbolInput2').val(data.symbol);
                 
                 $('#tips').html(`<br><h4 class="text-center">Tips will be shown over here.</h4><br>`);
                 

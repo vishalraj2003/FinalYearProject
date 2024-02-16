@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'authentication_module',
     'about_us',
     'companyData',
-    'transaction'
+    'transaction',
+    'updateTracker'
 
 ]
 
@@ -135,8 +136,10 @@ MEDIA_URL = '/media/'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'meetapatel20@gnu.ac.in'
-EMAIL_HOST_PASSWORD = 'gnu15102020'
+# EMAIL_HOST_USER = 'meetapatel20@gnu.ac.in'
+# EMAIL_HOST_PASSWORD = 'gnu15102020'
+EMAIL_HOST_USER = 'vishalraj20@gnu.ac.in'
+EMAIL_HOST_PASSWORD = 'Pinky@847425'
 EMAIL_USE_TLS = True
 
 # Default primary key field type

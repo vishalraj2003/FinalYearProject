@@ -6,7 +6,7 @@ class companyData(models.Model):
     # Existing fields
 
     companyName = models.CharField(max_length=60)
-    symbol = models.CharField(max_length=10, unique=True)
+    symbol = models.CharField(max_length=50, unique=True)
     # last_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     # New fields based

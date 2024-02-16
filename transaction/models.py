@@ -7,7 +7,7 @@ from companyData.models import companyData
 
 class Transaction(models.Model):
     user = models.EmailField(max_length=254)
-    company_symbol = models.CharField(max_length=10)
+    company_symbol = models.CharField(max_length=50)
     transaction_type = models.CharField(max_length=10)
     quantity = models.IntegerField()
     price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
