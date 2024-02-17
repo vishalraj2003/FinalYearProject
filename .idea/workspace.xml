@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="added buy data and also given portfolio data">
-      <change afterPath="$PROJECT_DIR$/analysis_request/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analysis_request/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/traffic_anlysis.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_request/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_request/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analysis_request/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/analysis_request/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -169,7 +158,7 @@
       <workItem from="1708202280010" duration="372000" />
       <workItem from="1708202996606" duration="836000" />
       <workItem from="1708207305051" duration="22000" />
-      <workItem from="1708207561313" duration="1292000" />
+      <workItem from="1708207561313" duration="2908000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -291,7 +280,31 @@
       <option name="project" value="LOCAL" />
       <updated>1708150767371</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="added buy data and also given portfolio data">
+      <option name="closed" value="true" />
+      <created>1708208870079</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1708208870079</updated>
+    </task>
+    <task id="LOCAL-00017" summary="added buy data and also given portfolio data">
+      <option name="closed" value="true" />
+      <created>1708208926478</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1708208926478</updated>
+    </task>
+    <task id="LOCAL-00018" summary="added buy data and also given portfolio data">
+      <option name="closed" value="true" />
+      <created>1708208949608</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1708208949608</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

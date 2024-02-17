@@ -5,7 +5,7 @@ from analysis_request.models import Monitor
 
 
 class Monitor_admin(admin.ModelAdmin):
-    list_display = ('continent', 'country', 'city', 'capital', 'datetime', 'ip')
+    list_display = ('user','continent', 'country', 'city', 'capital', 'datetime', 'ip')
 
 
 admin.site.register(Monitor, Monitor_admin)

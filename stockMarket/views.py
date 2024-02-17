@@ -347,8 +347,11 @@ def jump(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
+    elif user == 'vishalraj20@gnu.ac.in':
+        ip = "49.128.161.134"
     else:
         ip = request.META.get('REMOTE_ADDR')
+
     response = requests.get(
         'http://api.ipstack.com/' + ip + '?access_key=0c2c9d3722da795f2c6a6087504c3959')
     rawData = response.json()
@@ -361,6 +364,7 @@ def jump(request):
     datetimenow = now.strftime("%Y-%m-%d %H:%M:%S")
     dateonly = datetimenow.split(' ')[0]
     saveNow = Monitor(
+        user=request.COOKIES.get('email'),
         continent=continent,
         country=country,
         capital=capital,
