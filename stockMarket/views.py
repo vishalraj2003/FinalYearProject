@@ -344,11 +344,12 @@ def jump(request):
         'image': request.COOKIES.get('image'),
         'login_status': request.COOKIES.get('login_status')
     }
+    user = request.COOKIES.get('email')
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
     elif user == 'vishalraj20@gnu.ac.in':
-        ip = "49.128.161.134"
+        ip = '103.225.202.133'
     else:
         ip = request.META.get('REMOTE_ADDR')
 
