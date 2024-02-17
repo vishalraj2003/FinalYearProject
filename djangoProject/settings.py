@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'about_us',
     'companyData',
     'transaction',
-    'updateTracker'
+    'updateTracker',
+    'analysis_request',
 
 ]
 

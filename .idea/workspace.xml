@@ -5,8 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="added buy data and also given portfolio data">
+      <change afterPath="$PROJECT_DIR$/analysis_request/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis_request/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/traffic_anlysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,13 +62,19 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject/templates&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
+    ]
   }
 }</component>
   <component name="RecentsManager">
@@ -142,7 +160,16 @@
       <workItem from="1707637133704" duration="16076000" />
       <workItem from="1707981436443" duration="3384000" />
       <workItem from="1708094944762" duration="1840000" />
-      <workItem from="1708150408672" duration="311000" />
+      <workItem from="1708150408672" duration="507000" />
+      <workItem from="1708179683999" duration="675000" />
+      <workItem from="1708183264652" duration="616000" />
+      <workItem from="1708183906181" duration="753000" />
+      <workItem from="1708185153619" duration="1263000" />
+      <workItem from="1708187735724" duration="823000" />
+      <workItem from="1708202280010" duration="372000" />
+      <workItem from="1708202996606" duration="836000" />
+      <workItem from="1708207305051" duration="22000" />
+      <workItem from="1708207561313" duration="1292000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -256,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708095473981</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="added buy data and also given portfolio data">
+      <option name="closed" value="true" />
+      <created>1708150767371</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1708150767371</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

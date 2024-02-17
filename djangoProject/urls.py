@@ -48,7 +48,7 @@ urlpatterns = [
     path('portfolio/', views.portfolioView, name='portfolio'),
     path('sell/<str:company_symbol>/', views.sell_stock, name='sell_stock'),
     path('stock_details/<str:company_symbol>/', views.stock_details, name='stock_details'),
-
+    path('traffic/', views.traffic_monitor, name='traffic'),
 ]
 
 if settings.DEBUG:
