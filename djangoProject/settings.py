@@ -141,7 +141,7 @@ EMAIL_HOST_USER = 'meetapatel20@gnu.ac.in'
 EMAIL_HOST_PASSWORD = 'gnu15102020'
 
 EMAIL_USE_TLS = True
-
+#
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
