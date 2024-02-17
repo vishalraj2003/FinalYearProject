@@ -100,6 +100,7 @@ def stock_details(request, company_symbol):
 
     return render(request, 'stock_details.html', context)
 
+
 def portfolioView(request):
     user_email = request.COOKIES.get('email')
     if not user_email:
@@ -599,6 +600,9 @@ def should_run_update_nifty50():
 def daily_update_nifty50():
     if should_run_update_nifty50():
         update_nifty50()
+
+
+daily_update_nifty50()
 
 
 def profile_setting_user(request):
