@@ -73,15 +73,26 @@
             
             // Assuming the response data contains a field 'message'
             if (data.message) {
-                showMessage(data.message);
+                showMessage(data.message, data.status);
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('An error occurred. Please try again.', 'error');
+        });
     });
-    function showMessage(message) {
+    function showMessage(message, status) {
         var messageContainer = document.getElementById('messageContainer');
-        messageContainer.textContent = message;
-        messageContainer.style.display = 'block';
+        messageContainer.innerHTML = message; // Set the message text
+        messageContainer.style.display = 'block'; // Make the container visible
+        
+        
+        messageContainer.className = '';
+        if (status === 'success') {
+            messageContainer.classList.add('alert', 'alert-success');
+        } else {
+            messageContainer.classList.add('alert', 'alert-danger');
+        }
     }
 </script>
 

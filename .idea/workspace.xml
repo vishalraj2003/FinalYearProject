@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="added buy data and also given portfolio data">
+    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="Location tracker added">
+      <change afterPath="$PROJECT_DIR$/transaction/migrations/0005_buytransaction_creditbalanceupdate_selltransaction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/traffic_anlysis.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/traffic_anlysis.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/transaction_sell.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/transaction_sell.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/transaction/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +55,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/Videos/PASK Infotech/Finding specific News&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -158,7 +163,11 @@
       <workItem from="1708202996606" duration="836000" />
       <workItem from="1708207305051" duration="22000" />
       <workItem from="1708207561313" duration="3116000" />
-      <workItem from="1708210829345" duration="1438000" />
+      <workItem from="1708210829345" duration="2082000" />
+      <workItem from="1708337323798" duration="2057000" />
+      <workItem from="1708348654038" duration="10312000" />
+      <workItem from="1708427590529" duration="1012000" />
+      <workItem from="1708431033009" duration="529000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -312,7 +321,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708210495026</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Location tracker added">
+      <option name="closed" value="true" />
+      <created>1708212310797</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1708212310797</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -325,7 +342,8 @@
     <MESSAGE value="change in django version" />
     <MESSAGE value="All set" />
     <MESSAGE value="added buy data and also given portfolio data" />
-    <option name="LAST_COMMIT_MESSAGE" value="added buy data and also given portfolio data" />
+    <MESSAGE value="Location tracker added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Location tracker added" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

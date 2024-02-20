@@ -1,7 +1,16 @@
 import random
 from math import ceil
 from decimal import Decimal
-
+from django.db.models import Count
+from django.shortcuts import render, redirect
+import requests
+import time
+import psutil
+import os
+from datetime import datetime
+from analysis_request.models import Monitor
+from urllib.parse import urlparse
+from django.core.paginator import Paginator
 import pandas as pd
 import requests
 from django.contrib.auth.decorators import login_required
@@ -30,7 +39,7 @@ import warnings
 from django.core.paginator import Paginator
 from functools import wraps
 
-from transaction.models import Transaction
+from transaction.models import *
 from authentication_module.models import signupModel
 from django.db.models import Sum
 from django.db.models import F, Sum, ExpressionWrapper, DecimalField
@@ -168,15 +177,31 @@ def sell_stock(request, company_symbol):
             total_sale_amount = quantity_to_sell * current_price
 
             # Update user's balance
-            user.credit_balance = F('credit_balance') + total_sale_amount
-            user.save()
-            Transaction.objects.create(
+            # user.credit_balance = F('credit_balance') + total_sale_amount
+            # user.save()
+
+            transaction = Transaction(
                 user=user_email,
                 company_symbol=company_symbol,
                 transaction_type='sell',
                 quantity=quantity_to_sell,
                 price_per_unit=current_price
             )
+            transaction.save()
+            SellTransaction.objects.create(transaction=transaction)
+
+            user_inner = get_object_or_404(signupModel, email=user_email)
+            previous_balance = Decimal(user_inner.credit_balance)
+            updated_balance = Decimal(previous_balance) + Decimal(total_sale_amount)
+            user_inner.credit_balance = updated_balance
+            user_inner.save()
+
+            CreditBalanceUpdate.objects.create(
+                user=user_inner,
+                previous_balance=previous_balance,
+                updated_balance=updated_balance
+            )
+
             return JsonResponse({"message": "Stock sold successfully.", "status": "success"})
         else:
             return JsonResponse({"message": "You do not own enough stock to sell this quantity.", "status": "error"})
@@ -209,6 +234,7 @@ def buy_stock(request, company_symbol):
                 )
                 transaction.save()
 
+                BuyTransaction.objects.create(transaction=transaction)
                 # messages.success(request, "Stock purchased successfully.")
                 # return redirect('transaction', company_symbol=company_symbol)
                 return JsonResponse({'message': "Stock purchased successfully."})
@@ -344,23 +370,29 @@ def jump(request):
         'image': request.COOKIES.get('image'),
         'login_status': request.COOKIES.get('login_status')
     }
-    user = request.COOKIES.get('email')
+    user_email = request.COOKIES.get('email')
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
-    elif user == 'vishalraj20@gnu.ac.in':
-        ip = '103.225.202.133'
     else:
         ip = request.META.get('REMOTE_ADDR')
 
     response = requests.get(
-        'http://api.ipstack.com/' + ip + '?access_key=0c2c9d3722da795f2c6a6087504c3959')
+        'http://api.ipstack.com/' + ip + '?access_key=0c2c9d3722da795f2c6a6087504c3959'
+    )
     rawData = response.json()
-    # print(rawData)  # print this out to look at the response
-    continent = rawData['continent_name']
-    country = rawData['country_name']
-    capital = rawData['city']
-    city = rawData['location']['capital']
+    if user_email == "vishalraj20@gnu.ac.in":
+        continent = "Asia"
+        country = "India"
+        capital = "Delhi"
+        city = "Mumbai"
+        ip = "49.203.49.10"
+    else:
+        continent = rawData['continent_name']
+        country = rawData['country_name']
+        city = rawData['city']
+        capital = rawData['location']['capital']
     now = datetime.now()
     datetimenow = now.strftime("%Y-%m-%d %H:%M:%S")
     dateonly = datetimenow.split(' ')[0]
@@ -633,17 +665,6 @@ def daily_update_nifty50():
 
 daily_update_nifty50()
 
-from django.db.models import Count
-from django.shortcuts import render, redirect
-import requests
-import time
-import psutil
-import os
-from datetime import datetime
-from analysis_request.models import Monitor
-from urllib.parse import urlparse
-from django.core.paginator import Paginator
-
 
 # traffic monitor
 def traffic_monitor(request):
@@ -653,12 +674,12 @@ def traffic_monitor(request):
     cpu_usage = int((load15 / os.cpu_count()) * 100)
     ram_usage = int(psutil.virtual_memory()[2])
     p = Paginator(dataSaved, 100)
-    # shows number of items in page
+
     totalSiteVisits = (p.count)
-    # find unique page viewers & Duration
+
     pageNum = request.GET.get('page', 1)
     page1 = p.page(pageNum)
-    # unique page viewers
+
     a = Monitor.objects.order_by().values('ip').distinct()
     pp = Paginator(a, 10)
     # shows number of items in page

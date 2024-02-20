@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>ALienx &#8211; Connections</title>
+    <title>Bittu connection</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/album/">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core CSS -->
@@ -171,15 +171,7 @@
                               <th>City</th>
                             </tr>
                           </thead>
-                          <tfoot>
-                            <tr>
-                              <th>Time</th>
-                              <th>IP Address</th>
-                              <th>Continent</th>
-                              <th>Country</th>
-                              <th>City</th>
-                            </tr>
-                          </tfoot>
+                          
                           <tbody id="customer-table">
                             {% for data in dataSaved.object_list %}
                             <tr>
@@ -187,7 +179,7 @@
                                 <td>{{ data.ip }}</td>
                                 <td>{{ data.continent }}</td>
                                 <td>{{ data.country }}</td>
-                                <td>{{ data.capital }}</td>
+                                <td>{{ data.city }}</td>
                             </tr>
                             {% endfor %}
                           </tbody>
@@ -226,28 +218,28 @@
       </div>
       </div>
     </main>
-    <div class="container">
-                    <div class="row">
-                        <div class="col-sm-3 block">
-                           <canvas id="continentChart" class="circle"></canvas>
-                        </div>
-                        <div class="col-sm-3 block">
-                           <canvas id="countryChart" class="circle "></canvas>
-                        </div>
-                        <div class="col-sm-3 block">
-                           <canvas id="ipChart" class="circle "></canvas>
-                        </div>
-                        <div class="col-sm-3 block">
-                           <canvas id="cityChart" class="circle"></canvas>
-                        </div>
-                    </div>
-    </div>
-    <div class="chart-container">
+{#    <div class="container">#}
+{#                    <div class="row">#}
+{#                        <div class="col-sm-3 block">#}
+{#                           <canvas id="continentChart" class="circle"></canvas>#}
+{#                        </div>#}
+{#                        <div class="col-sm-3 block">#}
+{#                           <canvas id="countryChart" class="circle "></canvas>#}
+{#                        </div>#}
+{#                        <div class="col-sm-3 block">#}
+{#                           <canvas id="ipChart" class="circle "></canvas>#}
+{#                        </div>#}
+{#                        <div class="col-sm-3 block">#}
+{#                           <canvas id="cityChart" class="circle"></canvas>#}
+{#                        </div>#}
+{#                    </div>#}
+{#    </div>#}
+{#    <div class="chart-container">#}
     
     
     
     
-    </div>
+{#    </div>#}
 
 
 </style>
