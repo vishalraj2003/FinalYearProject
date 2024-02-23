@@ -35,18 +35,19 @@ from yahoo_fin import stock_info as si
 from django.http import HttpResponseRedirect
 from datetime import datetime
 import warnings
-
+# from authentication_module.models import signupModel
 from django.core.paginator import Paginator
 from functools import wraps
-
+from django.db import transaction as db_transaction
 from transaction.models import *
-from authentication_module.models import signupModel
+# from authentication_module.models import signupModel
 from django.db.models import Sum
 from django.db.models import F, Sum, ExpressionWrapper, DecimalField
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
 from updateTracker.models import UpdateTracker
+from authentication_module.models import signupModel
 
 
 # from django.http import HttpResponse
@@ -152,104 +153,157 @@ def portfolioView(request):
     return render(request, 'portfolio.html')
 
 
+# def sell_stock(request, company_symbol):
+#     if request.method == "POST":
+#         user_email = request.COOKIES.get('email')
+#         user = get_object_or_404(signupModel, email=user_email)
+#         quantity_to_sell = int(request.POST.get("quantity"))
+#         company = get_object_or_404(companyData, symbol=company_symbol)
+#
+#         # Calculate total quantity bought and sold for the company
+#         bought_quantity = \
+#             Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
+#                                        transaction_type='buy').aggregate(
+#                 total_bought=Sum('quantity'))['total_bought'] or 0
+#         sold_quantity = \
+#             Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
+#                                        transaction_type='sell').aggregate(
+#                 total_sold=Sum('quantity'))['total_sold'] or 0
+#
+#         available_to_sell = bought_quantity - sold_quantity
+#
+#         if available_to_sell >= quantity_to_sell:
+#             # Get current stock price
+#             current_price = float(company.quote_price)
+#             total_sale_amount = quantity_to_sell * current_price
+#
+#             # Update user's balance
+#             # user.credit_balance = F('credit_balance') + total_sale_amount
+#             # user.save()
+#
+#             transaction = Transaction(
+#                 user=user_email,
+#                 company_symbol=company_symbol,
+#                 transaction_type='sell',
+#                 quantity=quantity_to_sell,
+#                 price_per_unit=current_price
+#             )
+#             transaction.save()
+#             SellTransaction.objects.create(transaction=transaction)
+#
+#             user_inner = get_object_or_404(signupModel, email=user_email)
+#             previous_balance = Decimal(user_inner.credit_balance)
+#             updated_balance = Decimal(previous_balance) + Decimal(total_sale_amount)
+#             user_inner.credit_balance = updated_balance
+#             user_inner.save()
+#
+#             CreditBalanceUpdate.objects.create(
+#                 user=user_inner,
+#                 previous_balance=previous_balance,
+#                 updated_balance=updated_balance
+#             )
+#
+#             return JsonResponse({"message": "Stock sold successfully.", "status": "success"})
+#         else:
+#             return JsonResponse({"message": "You do not own enough stock to sell this quantity.", "status": "error"})
+#     else:
+#         return JsonResponse({"message": "Invalid request method.", "status": "error"})
+
 def sell_stock(request, company_symbol):
     if request.method == "POST":
-        user_email = request.COOKIES.get('email')
-        user = get_object_or_404(signupModel, email=user_email)
+        user_email = request.COOKIES.get('email', '')
         quantity_to_sell = int(request.POST.get("quantity"))
         company = get_object_or_404(companyData, symbol=company_symbol)
 
-        # Calculate total quantity bought and sold for the company
-        bought_quantity = \
-            Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
-                                       transaction_type='buy').aggregate(
-                total_bought=Sum('quantity'))['total_bought'] or 0
-        sold_quantity = \
-            Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
-                                       transaction_type='sell').aggregate(
-                total_sold=Sum('quantity'))['total_sold'] or 0
+        # Create Transaction for selling
+        transaction = Transaction(
+            user=user_email,
+            company_symbol=company_symbol,
+            transaction_type='sell',
+            quantity=quantity_to_sell,
+            price_per_unit=company.quote_price,
+            transaction_date=timezone.now()
+        )
+        transaction.save()
 
-        available_to_sell = bought_quantity - sold_quantity
+        # Create SellTransaction
+        sell_transaction = SellTransaction(transaction=transaction)
+        sell_transaction.save()
 
-        if available_to_sell >= quantity_to_sell:
-            # Get current stock price
-            current_price = float(company.quote_price)
-            total_sale_amount = quantity_to_sell * current_price
+        # Remove or update BuyTransaction
+        # This requires a strategy. For simplicity, let's assume we're removing the first matching BuyTransaction
+        buy_transaction = BuyTransaction.objects.filter(transaction__user=user_email, transaction__company_symbol=company_symbol).first()
+        if buy_transaction:
+            buy_transaction.delete()  # Adjust this logic based on your exact requirements
 
-            # Update user's balance
-            # user.credit_balance = F('credit_balance') + total_sale_amount
-            # user.save()
-
-            transaction = Transaction(
-                user=user_email,
-                company_symbol=company_symbol,
-                transaction_type='sell',
-                quantity=quantity_to_sell,
-                price_per_unit=current_price
-            )
-            transaction.save()
-            SellTransaction.objects.create(transaction=transaction)
-
-            user_inner = get_object_or_404(signupModel, email=user_email)
-            previous_balance = Decimal(user_inner.credit_balance)
-            updated_balance = Decimal(previous_balance) + Decimal(total_sale_amount)
-            user_inner.credit_balance = updated_balance
-            user_inner.save()
-
-            CreditBalanceUpdate.objects.create(
-                user=user_inner,
-                previous_balance=previous_balance,
-                updated_balance=updated_balance
-            )
-
-            return JsonResponse({"message": "Stock sold successfully.", "status": "success"})
-        else:
-            return JsonResponse({"message": "You do not own enough stock to sell this quantity.", "status": "error"})
+        return JsonResponse({"message": "Stock sold successfully", "status": "success"})
     else:
         return JsonResponse({"message": "Invalid request method.", "status": "error"})
 
-
-def buy_stock(request, company_symbol):
-    if request.method == "POST":
-
-        company = get_object_or_404(companyData, symbol=company_symbol)
-        user_email = request.COOKIES.get('email', '')
-        user_inner = get_object_or_404(signupModel, email=user_email)
-
-        try:
-            quantity = int(request.POST.get("quantity"))
-            price_per_unit = round(float(company.quote_price), 2)
-            total_cost = quantity * price_per_unit
-
-            if float(user_inner.credit_balance) >= float(total_cost):
-                user_inner.credit_balance = float(user_inner.credit_balance) - float(total_cost)
-                user_inner.save()
-                print("company name:", company.companyName)
-                transaction = Transaction(
-                    user=user_inner.email,
-                    company_symbol=company_symbol,
-                    transaction_type='buy',
-                    quantity=quantity,
-                    price_per_unit=price_per_unit
-                )
-                transaction.save()
-
-                BuyTransaction.objects.create(transaction=transaction)
-                # messages.success(request, "Stock purchased successfully.")
-                # return redirect('transaction', company_symbol=company_symbol)
-                return JsonResponse({'message': "Stock purchased successfully."})
-            else:
-                return JsonResponse({'message': "Insufficient credit balance."})
-
-        except Exception as e:
-            return JsonResponse({'message': f"An error occurred: {str(e)}"})
-
-    return JsonResponse({'message': "Invalid request method."})
+# def buy_stock(request, company_symbol):
+#     if request.method == "POST":
+#
+#         company = get_object_or_404(companyData, symbol=company_symbol)
+#         user_email = request.COOKIES.get('email', '')
+#         user_inner = get_object_or_404(signupModel, email=user_email)
+#
+#         try:
+#             quantity = int(request.POST.get("quantity"))
+#             price_per_unit = round(float(company.quote_price), 2)
+#             total_cost = quantity * price_per_unit
+#
+#             if float(user_inner.credit_balance) >= float(total_cost):
+#                 user_inner.credit_balance = float(user_inner.credit_balance) - float(total_cost)
+#                 user_inner.save()
+#                 print("company name:", company.companyName)
+#                 transaction = Transaction(
+#                     user=user_inner.email,
+#                     company_symbol=company_symbol,
+#                     transaction_type='buy',
+#                     quantity=quantity,
+#                     price_per_unit=price_per_unit
+#                 )
+#                 transaction.save()
+#
+#                 BuyTransaction.objects.create(transaction=transaction)
+#                 # messages.success(request, "Stock purchased successfully.")
+#                 # return redirect('transaction', company_symbol=company_symbol)
+#                 return JsonResponse({'message': "Stock purchased successfully."})
+#             else:
+#                 return JsonResponse({'message': "Insufficient credit balance."})
+#
+#         except Exception as e:
+#             return JsonResponse({'message': f"An error occurred: {str(e)}"})
+#
+#     return JsonResponse({'message': "Invalid request method."})
     #     else:
     #         messages.error(request, "Insufficient credit balance.")
     #         redirect('transaction', company_symbol=company_symbol)
     # else:
     #     return redirect('transaction', company_symbol=company_symbol)
+
+def buy_stock(request, company_symbol):
+    if request.method == "POST":
+        company = get_object_or_404(companyData, symbol=company_symbol)
+        user_email = request.COOKIES.get('email', '')
+        quantity = int(request.POST.get("quantity"))
+        price_per_unit = company.quote_price
+
+        # Create Transaction record
+        transaction = Transaction.objects.create(
+            user=user_email,
+            company_symbol=company_symbol,
+            transaction_type='buy',
+            quantity=quantity,
+            price_per_unit=price_per_unit
+        )
+
+        # Link to BuyTransaction
+        BuyTransaction.objects.create(transaction=transaction)
+
+        return JsonResponse({"message": "Stock purchased successfully.", "status": "success"})
+
+    return JsonResponse({"message": "Invalid request method.", "status": "error"})
 
 
 def transaction_page(request):
@@ -548,7 +602,7 @@ def login(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         try:
-            user_inner = models.signupModel.objects.get(email=email)
+            user_inner = signupModel.objects.get(email=email)
             if user_inner.password == password:
                 first_name = user_inner.first_name
                 last_name = user_inner.last_name
@@ -599,7 +653,7 @@ def otp_login_login(request):
         print("otpWeb is " + str(otpWeb))
         if str(otp_a) == str(otpWeb):
             email = login_data.get('email')
-            values = models.signupModel.objects.get(email=email)
+            values = signupModel.objects.get(email=email)
             first_name = values.first_name
             last_name = values.last_name
             email = values.email
@@ -757,7 +811,7 @@ def profile_setting_user(request):
 
         try:
 
-            user_inner = models.signupModel.objects.get(email=email)
+            user_inner = signupModel.objects.get(email=email)
             user_inner.first_name = first_name
             user_inner.last_name = last_name
             user_inner.email = email
@@ -846,7 +900,7 @@ def profile_setting(request):
 
         try:
 
-            user_inner = models.signupModel.objects.get(email=email)
+            user_inner = signupModel.objects.get(email=email)
             user_inner.first_name = first_name
             user_inner.last_name = last_name
             user_inner.email = email
@@ -877,9 +931,9 @@ def reset(request):
             'otp_a': otp_a
         }
 
-        if models.signupModel.objects.filter(email=email).exists():
+        if signupModel.objects.filter(email=email).exists():
             print(f"OTP: {otp_a}")
-            values = models.signupModel.objects.get(email=email)
+            values = signupModel.objects.get(email=email)
             first_name = values.first_name
             last_name = values.last_name
             email = values.email
@@ -926,7 +980,7 @@ def otp_login(request):
         otp_web = request.POST.get('otpWeb')
         print("I am outside the otp verify")
         if str(otp_a) == str(otp_web):
-            values = models.signupModel.objects.get(email=email)
+            values = signupModel.objects.get(email=email)
             print(values)
 
             return render(request, 'profile_setting.html', login_data)
@@ -1010,7 +1064,7 @@ def signup(request):
             messages.error(request, 'Passwords do not match')
             return render(request, 'signup.html')
 
-        if models.signupModel.objects.filter(email=email).exists():
+        if signupModel.objects.filter(email=email).exists():
             messages.error(request,
                            'Email already registered. <br> <b>please try sign in.</b> <br> use forget password')
             return render(request, 'signup.html')
