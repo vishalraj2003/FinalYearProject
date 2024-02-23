@@ -424,42 +424,42 @@ def jump(request):
         'image': request.COOKIES.get('image'),
         'login_status': request.COOKIES.get('login_status')
     }
-    user_email = request.COOKIES.get('email')
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-
-    response = requests.get(
-        'http://api.ipstack.com/' + ip + '?access_key=0c2c9d3722da795f2c6a6087504c3959'
-    )
-    rawData = response.json()
-    if user_email == "vishalraj20@gnu.ac.in":
-        continent = "Asia"
-        country = "India"
-        capital = "Delhi"
-        city = "Mumbai"
-        ip = "49.203.49.10"
-    else:
-        continent = rawData['continent_name']
-        country = rawData['country_name']
-        city = rawData['city']
-        capital = rawData['location']['capital']
-    now = datetime.now()
-    datetimenow = now.strftime("%Y-%m-%d %H:%M:%S")
-    dateonly = datetimenow.split(' ')[0]
-    saveNow = Monitor(
-        user=request.COOKIES.get('email'),
-        continent=continent,
-        country=country,
-        capital=capital,
-        city=city,
-        datetime=dateonly,
-        ip=ip
-    )
-    saveNow.save()
+    # user_email = request.COOKIES.get('email')
+    # x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    #
+    # if x_forwarded_for:
+    #     ip = x_forwarded_for.split(',')[0]
+    # else:
+    #     ip = request.META.get('REMOTE_ADDR')
+    #
+    # response = requests.get(
+    #     'http://api.ipstack.com/' + ip + '?access_key=0c2c9d3722da795f2c6a6087504c3959'
+    # )
+    # rawData = response.json()
+    # if user_email == "vishalraj20@gnu.ac.in":
+    #     continent = "Asia"
+    #     country = "India"
+    #     capital = "Delhi"
+    #     city = "Mumbai"
+    #     ip = "49.203.49.10"
+    # else:
+    #     continent = rawData['continent_name']
+    #     country = rawData['country_name']
+    #     city = rawData['city']
+    #     capital = rawData['location']['capital']
+    # now = datetime.now()
+    # datetimenow = now.strftime("%Y-%m-%d %H:%M:%S")
+    # dateonly = datetimenow.split(' ')[0]
+    # saveNow = Monitor(
+    #     user=request.COOKIES.get('email'),
+    #     continent=continent,
+    #     country=country,
+    #     capital=capital,
+    #     city=city,
+    #     datetime=dateonly,
+    #     ip=ip
+    # )
+    # saveNow.save()
     return render(request, 'jump.html')
 
 
