@@ -215,30 +215,31 @@ def sell_stock(request, company_symbol):
         quantity_to_sell = int(request.POST.get("quantity"))
         company = get_object_or_404(companyData, symbol=company_symbol)
 
-        # Create Transaction for selling
-        transaction = Transaction(
-            user=user_email,
-            company_symbol=company_symbol,
-            transaction_type='sell',
-            quantity=quantity_to_sell,
-            price_per_unit=company.quote_price,
-            transaction_date=timezone.now()
-        )
-        transaction.save()
-
-        # Create SellTransaction
-        sell_transaction = SellTransaction(transaction=transaction)
-        sell_transaction.save()
-
-        # Remove or update BuyTransaction
-        # This requires a strategy. For simplicity, let's assume we're removing the first matching BuyTransaction
-        buy_transaction = BuyTransaction.objects.filter(transaction__user=user_email, transaction__company_symbol=company_symbol).first()
+        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol).first()
+        print(buy_transaction)
         if buy_transaction:
-            buy_transaction.delete()  # Adjust this logic based on your exact requirements
+            buy_transaction.delete()
+
+            transaction = Transaction(
+                user=user_email,
+                company_symbol=company_symbol,
+                transaction_type='sell',
+                quantity=quantity_to_sell,
+                price_per_unit=company.quote_price,
+                transaction_date=timezone.now()
+            )
+            transaction.save()
+
+            # Create SellTransaction
+            sell_transaction = SellTransaction(transaction=transaction)
+            sell_transaction.save()
+        else:
+            return JsonResponse({"message": "Not enough stock", "status": "success"})
 
         return JsonResponse({"message": "Stock sold successfully", "status": "success"})
     else:
         return JsonResponse({"message": "Invalid request method.", "status": "error"})
+
 
 # def buy_stock(request, company_symbol):
 #     if request.method == "POST":
@@ -276,11 +277,11 @@ def sell_stock(request, company_symbol):
 #             return JsonResponse({'message': f"An error occurred: {str(e)}"})
 #
 #     return JsonResponse({'message': "Invalid request method."})
-    #     else:
-    #         messages.error(request, "Insufficient credit balance.")
-    #         redirect('transaction', company_symbol=company_symbol)
-    # else:
-    #     return redirect('transaction', company_symbol=company_symbol)
+#     else:
+#         messages.error(request, "Insufficient credit balance.")
+#         redirect('transaction', company_symbol=company_symbol)
+# else:
+#     return redirect('transaction', company_symbol=company_symbol)
 
 def buy_stock(request, company_symbol):
     if request.method == "POST":
