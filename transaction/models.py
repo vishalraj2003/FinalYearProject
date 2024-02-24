@@ -6,23 +6,39 @@ from companyData.models import companyData
 
 
 class Transaction(models.Model):
-    user = models.EmailField(max_length=254)
-    company_symbol = models.CharField(max_length=50)
-    transaction_type = models.CharField(max_length=10)
-    quantity = models.IntegerField()
-    price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_date = models.DateTimeField(auto_now_add=True)
+    user = models.EmailField(max_length=254,null=True)
+    company_symbol = models.CharField(max_length=50,null=True)
+    transaction_type = models.CharField(max_length=10,null=True)
+    quantity = models.IntegerField(null=True)
+    price_per_unit = models.DecimalField(max_digits=10, decimal_places=2,null=True)
+    transaction_date = models.DateTimeField(auto_now_add=True,null=True)
 
     def total_amount(self):
         return self.quantity * self.price_per_unit
 
 
 class BuyTransaction(models.Model):
-    transaction = models.ForeignKey('Transaction', on_delete=models.CASCADE, related_name='buy_transactions')
+    user = models.EmailField(max_length=254,null=True)
+    company_symbol = models.CharField(max_length=50,null=True)
+    transaction_type = models.CharField(max_length=10,null=True)
+    quantity = models.IntegerField(null=True)
+    price_per_unit = models.DecimalField(max_digits=10, decimal_places=2,null=True)
+    transaction_date = models.DateTimeField(auto_now_add=True,null=True)
+
+    def total_amount(self):
+        return self.quantity * self.price_per_unit
 
 
 class SellTransaction(models.Model):
-    transaction = models.ForeignKey('Transaction', on_delete=models.CASCADE, related_name='sell_transactions')
+    user = models.EmailField(max_length=254,null=True)
+    company_symbol = models.CharField(max_length=50,null=True)
+    transaction_type = models.CharField(max_length=10,null=True)
+    quantity = models.IntegerField(null=True)
+    price_per_unit = models.DecimalField(max_digits=10, decimal_places=2,null=True)
+    transaction_date = models.DateTimeField(auto_now_add=True,null=True)
+
+    def total_amount(self):
+        return self.quantity * self.price_per_unit
 
 
 class CreditBalanceUpdate(models.Model):

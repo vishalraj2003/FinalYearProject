@@ -215,7 +215,7 @@ def sell_stock(request, company_symbol):
         quantity_to_sell = int(request.POST.get("quantity"))
         company = get_object_or_404(companyData, symbol=company_symbol)
 
-        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol).first()
+        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='buy').first()
         print(buy_transaction)
         if buy_transaction:
             buy_transaction.delete()
@@ -231,7 +231,14 @@ def sell_stock(request, company_symbol):
             transaction.save()
 
             # Create SellTransaction
-            sell_transaction = SellTransaction(transaction=transaction)
+            sell_transaction = SellTransaction(
+                user=user_email,
+                company_symbol=company_symbol,
+                transaction_type='sell',
+                quantity=quantity_to_sell,
+                price_per_unit=company.quote_price,
+                transaction_date=timezone.now()
+            )
             sell_transaction.save()
         else:
             return JsonResponse({"message": "Not enough stock", "status": "success"})
@@ -291,7 +298,7 @@ def buy_stock(request, company_symbol):
         price_per_unit = company.quote_price
 
         # Create Transaction record
-        transaction = Transaction.objects.create(
+        Transaction.objects.create(
             user=user_email,
             company_symbol=company_symbol,
             transaction_type='buy',
@@ -299,8 +306,13 @@ def buy_stock(request, company_symbol):
             price_per_unit=price_per_unit
         )
 
-        # Link to BuyTransaction
-        BuyTransaction.objects.create(transaction=transaction)
+        BuyTransaction.objects.create(
+            user=user_email,
+            company_symbol=company_symbol,
+            transaction_type='buy',
+            quantity=quantity,
+            price_per_unit=price_per_unit,
+        )
 
         return JsonResponse({"message": "Stock purchased successfully.", "status": "success"})
 
