@@ -8,9 +8,12 @@ import time
 import psutil
 import os
 from datetime import datetime
+
+from django.template.loader import render_to_string
+
 from analysis_request.models import Monitor
 from urllib.parse import urlparse
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import pandas as pd
 import requests
 from django.contrib.auth.decorators import login_required
@@ -42,7 +45,7 @@ from django.db import transaction as db_transaction
 from transaction.models import *
 # from authentication_module.models import signupModel
 from django.db.models import Sum
-from django.db.models import F, Sum, ExpressionWrapper, DecimalField
+from django.db.models import F, Sum, ExpressionWrapper, DecimalField, Case, When
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
@@ -59,59 +62,119 @@ from authentication_module.models import signupModel
 
 def stock_details(request, company_symbol):
     # Fetch transactions and company data
-    transactions = Transaction.objects.filter(company_symbol=company_symbol).values()
+    buy_transactions = BuyTransaction.objects.filter(company_symbol=company_symbol).values()
+    sell_transactions = SellTransaction.objects.filter(company_symbol=company_symbol).values()
     company = get_object_or_404(companyData, symbol=company_symbol)
+    current_price = Decimal(company.quote_price)
 
     # Convert to DataFrame
+    transactions = list(buy_transactions) + list(sell_transactions)
     df = pd.DataFrame(list(transactions))
 
     if not df.empty:
         # Ensure 'transaction_date' is a datetime type
         df['transaction_date'] = pd.to_datetime(df['transaction_date'])
+
         # Ensure 'quantity' and 'price_per_unit' are numeric
         df['quantity'] = pd.to_numeric(df['quantity'], errors='coerce')
-        df['price_per_unit'] = pd.to_numeric(df['price_per_unit'], errors='coerce')
+        df['price_per_unit'] = pd.to_numeric(df.get('buy_price_per_unit', 0), errors='coerce', downcast='float')
+        df['sell_price_per_unit'] = pd.to_numeric(df.get('sell_price_per_unit', 0), errors='coerce', downcast='float')
+        df['current_price'] = current_price
+
+        # Calculate profit for each transaction
+        df['profit'] = df.apply(
+            lambda row: (Decimal(row['current_price']) - Decimal(row['price_per_unit'])) * Decimal(row['quantity']) if
+            row['transaction_type'] == 'buy' else (Decimal(row['sell_price_per_unit']) - Decimal(
+                row['price_per_unit'])) * Decimal(row['quantity']), axis=1)
 
         # Separate dataframes for buy and sell transactions
-        df_buy = df[df['transaction_type'] == 'buy']
-        df_sell = df[df['transaction_type'] == 'sell']
+        # df_buy = df[df['transaction_type'] == 'buy']
+        # df_sell = df[df['transaction_type'] == 'sell']
 
         # Plotting
         plt.figure(figsize=(10, 6))
 
-        # Plot Buy Transactions
+        df_buy = df[df['transaction_type'] == 'buy']
         if not df_buy.empty:
-            plt.plot(df_buy['transaction_date'], df_buy['price_per_unit'], label='Buy', marker='o', linestyle='-',
-                     color='green')
+            plt.plot(df_buy['transaction_date'], df_buy['profit'], label='Buy Profit', marker='o', linestyle='-',
+                     color='blue')
 
-        # Plot Sell Transactions
+        # Plot Sell Transactions Profit
+        df_sell = df[df['transaction_type'] == 'sell']
         if not df_sell.empty:
-            plt.plot(df_sell['transaction_date'], df_sell['price_per_unit'], label='Sell', marker='x', linestyle='-',
-                     color='red')
+            plt.plot(df_sell['transaction_date'], df_sell['profit'], label='Sell Profit', marker='x', linestyle='-',
+                     color='orange')
 
-        plt.title(f'Transaction Prices for {company.companyName}')
+        plt.title(f'Profit from Transactions for {company.companyName}')
         plt.xlabel('Date')
-        plt.ylabel('Price Per Unit')
+        plt.ylabel('Profit')
         plt.legend()
-
-        # Convert plot to PNG image
-        buf = BytesIO()
-        plt.savefig(buf, format='png', bbox_inches='tight')
+        buf_profit = BytesIO()
+        plt.savefig(buf_profit, format='png', bbox_inches='tight')
         plt.close()
-        image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8')
-        buf.close()
-    else:
-        image_base64 = None
+        profit_image_base64 = base64.b64encode(buf_profit.getvalue()).decode('utf-8')
+        buf_profit.close()
 
+        # quantity graph
+        plt.figure(figsize=(10, 6))
+        if not df_buy.empty:
+            plt.plot(df_buy['transaction_date'], df_buy['quantity'], label='Buy Quantity', marker='o', linestyle='-',
+                     color='green')
+        if not df_sell.empty:
+            plt.plot(df_sell['transaction_date'], df_sell['quantity'], label='Sell Quantity', marker='x', linestyle='-',
+                     color='red')
+        plt.title(f'Buy and Sell Quantities for {company.companyName}')
+        plt.xlabel('Date')
+        plt.ylabel('Quantity')
+        plt.legend()
+        buf_quantity = BytesIO()
+        plt.savefig(buf_quantity, format='png', bbox_inches='tight')
+        plt.close()
+        quantity_image_base64 = base64.b64encode(buf_quantity.getvalue()).decode('utf-8')
+        buf_quantity.close()
+    else:
+        profit_image_base64 = None
+        quantity_image_base64 = None
+
+    # Buy Price vs Date Graph
+    buy_price_image_base64 = generate_price_vs_date_graph(buy_transactions, 'buy_price_per_unit',
+                                                          'Buy Price Per Unit vs Date', 'blue')
+
+    # Sell Price vs Date Graph
+    sell_price_image_base64 = generate_price_vs_date_graph(sell_transactions, 'sell_price_per_unit',
+                                                           'Sell Price Per Unit vs Date', 'orange')
     context = {
         'company_symbol': company_symbol,
-        'image_base64': image_base64,
+        'profit_image_base64': profit_image_base64,
+        'quantity_image_base64': quantity_image_base64,
+        'buy_price_image_base64': buy_price_image_base64,
+        'sell_price_image_base64': sell_price_image_base64,
     }
 
     return render(request, 'stock_details.html', context)
 
 
+def generate_price_vs_date_graph(transactions, price_column, title, color):
+    if transactions:
+        df = pd.DataFrame(transactions)
+        df['transaction_date'] = pd.to_datetime(df['transaction_date'])
+        plt.figure(figsize=(10, 6))
+        plt.plot(df['transaction_date'], df[price_column], label=title, marker='o', linestyle='-', color=color)
+        plt.title(title)
+        plt.xlabel('Date')
+        plt.ylabel('Price Per Unit')
+        plt.legend()
+
+        buf = BytesIO()
+        plt.savefig(buf, format='png', bbox_inches='tight')
+        plt.close()
+        return base64.b64encode(buf.getvalue()).decode('utf-8')
+    else:
+        return None
+
+
 def portfolioView(request):
+    search_query = request.GET.get('search', '').strip()
     user_email = request.COOKIES.get('email')
     if not user_email:
         # Handle user not logged in scenario
@@ -121,19 +184,54 @@ def portfolioView(request):
             'company_symbol', 'transaction_type'
         ).annotate(
             total_quantity=Sum('quantity'),
-            total_amount=Sum(ExpressionWrapper(F('quantity') * F('price_per_unit'), output_field=DecimalField())),
+            total_buy_amount=Sum(
+                Case(
+                    When(transaction_type='buy',
+                         then=ExpressionWrapper(F('quantity') * F('buy_price_per_unit'), output_field=DecimalField())),
+                    default=0,
+                    output_field=DecimalField()
+                )
+            ),
+            total_sell_amount=Sum(
+                Case(
+                    When(transaction_type='sell',
+                         then=ExpressionWrapper(F('quantity') * F('sell_price_per_unit'), output_field=DecimalField())),
+                    default=0,
+                    output_field=DecimalField()
+                )
+            )
         ).order_by('company_symbol', 'transaction_type')
         total_profit_loss = 0
+        total_sell_profit_loss_port = Decimal(0)
         portfolio = []
         for trans in transactions:
             company = companyData.objects.get(symbol=trans['company_symbol'])
             # Calculate profit or loss
             current_price = Decimal(company.quote_price)  # Assuming this is the current stock price
-            total_investment = trans['total_amount']
+
+            # total_investment = trans['total_amount']
+            if trans['transaction_type'] == 'buy':
+                total_investment = trans['total_buy_amount']
+            elif trans['transaction_type'] == 'sell':
+                total_investment = trans['total_sell_amount']
+            else:
+                total_investment = Decimal(0)
+
             market_value = trans['total_quantity'] * current_price
             profit_loss = market_value - total_investment
             if trans['transaction_type'] == 'buy':
                 total_profit_loss += profit_loss
+
+            sell_profit_loss = 0
+
+            if trans['transaction_type'] == 'sell':
+                sell_transactions = SellTransaction.objects.filter(
+                    user=user_email,
+                    company_symbol=trans['company_symbol']
+                ).aggregate(total_sell_profit_loss=Sum('sell_profit_loss'))
+                sell_profit_loss = sell_transactions['total_sell_profit_loss']
+                total_sell_profit_loss_port += sell_profit_loss
+
             portfolio.append({
                 'company_name': company.companyName,
                 'symbol': trans['company_symbol'],
@@ -142,12 +240,40 @@ def portfolioView(request):
                 'total_investment': total_investment,
                 'current_price': current_price,
                 'market_value': market_value,
-                'profit_loss': profit_loss,
+                'buy_profit_loss': profit_loss,
+                'sell_profit_loss': sell_profit_loss,
                 'profit_loss_color': 'green' if profit_loss > 0 else 'red',
+                'profit_loss_color2': 'green' if sell_profit_loss > 0 else 'red',
             })
+
+        if search_query:
+            filtered_portfolio = [item for item in portfolio if
+                                  search_query.lower() in item['company_name'].lower() or search_query.lower() in item[
+                                      'symbol'].lower()]
+        else:
+            filtered_portfolio = portfolio
+        stocks_per_page = 3  # or any number you prefer
+        page_number = request.GET.get('page')  # Get the page number from request
+        paginator_stocks = Paginator(filtered_portfolio, stocks_per_page)
+        try:
+            stocks_page_obj = paginator_stocks.get_page(page_number)
+        except PageNotAnInteger:
+            stocks_page_obj = paginator_stocks.page(1)
+        except EmptyPage:
+            stocks_page_obj = paginator_stocks.page(paginator_stocks.num_pages)
+
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            html = render_to_string(
+                template_name='portfolio_stocks_list.html',
+                context={'portfolio': stocks_page_obj}
+            )
+            return JsonResponse({'html': html})
+
         context = {
-            'portfolio': portfolio,
+            'portfolio': stocks_page_obj,
             'total_profit_loss': total_profit_loss,
+            'total_sell_profit_loss': total_sell_profit_loss_port,
+
         }
         return render(request, 'portfolio.html', context)
     return render(request, 'portfolio.html')
@@ -215,20 +341,24 @@ def sell_stock(request, company_symbol):
         quantity_to_sell = int(request.POST.get("quantity"))
         company = get_object_or_404(companyData, symbol=company_symbol)
 
-        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='buy').first()
+        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
+                                                     transaction_type='buy').first()
         print(buy_transaction)
         if buy_transaction:
-            buy_transaction.delete()
 
             transaction = Transaction(
                 user=user_email,
                 company_symbol=company_symbol,
                 transaction_type='sell',
                 quantity=quantity_to_sell,
-                price_per_unit=company.quote_price,
+                sell_price_per_unit=company.quote_price,
                 transaction_date=timezone.now()
             )
             transaction.save()
+
+            buy_price = buy_transaction.buy_price_per_unit * quantity_to_sell
+            sell_price = Decimal(company.quote_price) * quantity_to_sell
+            profit_loss = sell_price - buy_price
 
             # Create SellTransaction
             sell_transaction = SellTransaction(
@@ -236,10 +366,14 @@ def sell_stock(request, company_symbol):
                 company_symbol=company_symbol,
                 transaction_type='sell',
                 quantity=quantity_to_sell,
-                price_per_unit=company.quote_price,
+                sell_price_per_unit=company.quote_price,
+                buy_price_per_unit=buy_transaction.buy_price_per_unit,
+                sell_profit_loss=profit_loss,
                 transaction_date=timezone.now()
             )
             sell_transaction.save()
+
+            buy_transaction.delete()
         else:
             return JsonResponse({"message": "Not enough stock", "status": "success"})
 
@@ -303,7 +437,7 @@ def buy_stock(request, company_symbol):
             company_symbol=company_symbol,
             transaction_type='buy',
             quantity=quantity,
-            price_per_unit=price_per_unit
+            buy_price_per_unit=price_per_unit
         )
 
         BuyTransaction.objects.create(
@@ -311,7 +445,7 @@ def buy_stock(request, company_symbol):
             company_symbol=company_symbol,
             transaction_type='buy',
             quantity=quantity,
-            price_per_unit=price_per_unit,
+            buy_price_per_unit=price_per_unit,
         )
 
         return JsonResponse({"message": "Stock purchased successfully.", "status": "success"})

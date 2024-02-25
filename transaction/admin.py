@@ -7,19 +7,21 @@ from transaction.models import Transaction, BuyTransaction, SellTransaction, Cre
 
 class transactionAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'company_symbol', 'transaction_type', 'quantity', 'price_per_unit', 'transaction_date'
+        'id','user', 'company_symbol', 'transaction_type', 'quantity', 'buy_price_per_unit','sell_price_per_unit', 'transaction_date'
     )
 
 
 class transaction_buy_Admin(admin.ModelAdmin):
     list_display = (
-        'user', 'company_symbol', 'transaction_type', 'quantity', 'price_per_unit', 'transaction_date'
+        'id', 'user', 'company_symbol', 'transaction_type', 'quantity', 'buy_price_per_unit', 'sell_price_per_unit',
+        'transaction_date'
     )
 
 
 class transaction_sell_Admin(admin.ModelAdmin):
     list_display = (
-        'user', 'company_symbol', 'transaction_type', 'quantity', 'price_per_unit', 'transaction_date'
+        'id', 'user', 'company_symbol', 'transaction_type', 'quantity', 'buy_price_per_unit', 'sell_price_per_unit',
+        'sell_profit_loss','transaction_date'
     )
 
 

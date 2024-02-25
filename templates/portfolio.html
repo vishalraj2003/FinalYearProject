@@ -1,21 +1,149 @@
 {% include 'header_user.html' %}
 <head>
-<style>
-    .my-custom-table td, .my-custom-table th {
-        {#padding: 0.3rem;#}
-        padding-right: 2px;
-        padding-left: 2px;
-    }
-</style>
-    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .profit { color: green; }
+        .loss { color: red; }
+        .card-header-custom { background-color: #007bff; color: white; }
+        .card-body-custom { background-color: #f8f9fa; }
+        .card-header-sell { background-color: #dc3545; color: white; }
+        .btn-custom { background-color: #007bff; color: white; }
+    </style>
 </head>
 <body>
-<div class="container-fluid ">
-    <div class="container">
-        <h1 class="card-header bg-dark text-info text-center mb-5">{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }} has following stocks: </h1>
+<div class="container my-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4">{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }}'s Stock Portfolio</h1>
+    </div>
+    
+    <form action="" method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search by Company Name or Symbol" name="search" value="{{ search_query }}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <a href="{% url 'portfolio' %}" class="btn btn-outline-danger">Clear</a>
+            </div>
+        </div>
+    </form>
+    <!-- Stock Summary Cards -->
 
-{#    buy part#}
-    <h2 class="text-center text-success">Buy Transactions</h2>
+    <div class="row">
+        {% for stock in portfolio %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+
+            {% if stock.transaction_type == 'sell' %}
+                <div class="text-center card-header {% if stock.transaction_type == 'sell' %}card-header-sell{% else %}card-header-custom{% endif %}">
+                    {{ stock.symbol }} - {{ stock.company_name }} - <strong>Sold </Strong>
+                </div>
+            {% endif %}
+            {% if stock.transaction_type == 'buy' %}
+                <div class="card-header text-center card-header-custom">
+                    {{ stock.symbol }} - {{ stock.company_name }} - <strong>Bought</Strong>
+                </div>
+            {% endif %}
+                <div class="card-body card-body-custom">
+                    <h5 class="card-title">Current Price: ₹{{ stock.current_price | floatformat:2 }} </h5>
+                    <p class="card-text">Total Investment: ₹{{ stock.total_investment | floatformat:2 }}</p>
+                    <p class="card-text">Quantity: {{ stock.quantity }}</p>
+                    <p class="card-text">Market Value: ₹{{ stock.market_value | floatformat:2 }}</p>
+                    <p class="card-text"> Profit/Loss:
+                    {% if stock.transaction_type == 'buy' %}
+                    <strong style="color: {{ stock.profit_loss_color }}">
+                        ₹{{ total_profit_loss|floatformat:2 }}
+                    </strong>
+                            {% if total_profit_loss > 0 %}
+                                <i class="fas fa-arrow-up" style="color: green;"></i> <!-- Profit Icon -->
+                            {% else %}
+                                <i class="fas fa-arrow-down" style="color: red;"></i> <!-- Loss Icon -->
+                            {% endif %}
+                    {% endif %}
+                    {% if stock.transaction_type == 'sell' %}
+                        <strong style="color: {{ stock.profit_loss_color2 }}">
+                            ₹{{ total_sell_profit_loss|floatformat:2 }}
+                            </strong>
+                            {% if total_sell_profit_loss > 0 %}
+                                <i class="fas fa-arrow-up" style="color: green;"></i>
+                            {% else %}
+                                <i class="fas fa-arrow-down" style="color: red;"></i> 
+                            {% endif %}
+
+                    {% endif %}
+                    </p>
+                    <a href="{% url 'stock_details' stock.symbol %}" class="btn btn-custom">More details</a>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+
+    </div>
+ <!-- Pagination logic-->
+    <nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    <!-- First Page Link -->
+    {% if portfolio.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1" aria-label="First">
+        <span aria-hidden="true">&laquo;&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Previous Page Link -->
+    {% if portfolio.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    {% for num in portfolio.paginator.page_range %}
+      {% if portfolio.number == num %}
+        <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next Page Link -->
+    {% if portfolio.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Last Page Link -->
+    {% if portfolio.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.paginator.num_pages }}" aria-label="Last">
+        <span aria-hidden="true">&raquo;&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+
+    <!-- Transactions Tab -->
+    <ul class="nav nav-tabs" id="transactionTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="buy-tab" data-toggle="tab" href="#buy" role="tab" aria-controls="buy" aria-selected="true">Buy Transactions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="sell-tab" data-toggle="tab" href="#sell" role="tab" aria-controls="sell" aria-selected="false">Sell Transactions</a>
+        </li>
+    </ul>
+<div class="tab-content" id="transactionTabContent">
+        <div class="tab-pane fade show active" id="buy" role="tabpanel" aria-labelledby="buy-tab">
+
         <div class="table-responsive ">
         <table class="table table-striped my-custom-table">
               <thead>
@@ -25,8 +153,8 @@
                   <th scope="col">Transaction type</th>
                   <th scope="col">Quantity</th>
                   <th scope="col">Total Investment</th>
-                  <th scope="col">Current Price</th>
-                  <th scope="col">Market value of stock</th>
+{#                  <th scope="col">Current Price</th>#}
+{#                  <th scope="col">Market value of stock</th>#}
                   <th scope="col">Current Profit/Loss</th>
                   <th scope="col">More details</th>
                 </tr>
@@ -41,9 +169,17 @@
                         <td>{{ item.transaction_type }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>₹{{ item.total_investment|floatformat:2 }}</td>
-                    <td>₹{{ item.current_price|floatformat:2 }}</td>
-                    <td>₹{{ item.market_value|floatformat:2 }}</td>
-                    <td style="color: {{ item.profit_loss_color }}">₹{{ item.profit_loss|floatformat:2 }}</td>
+{#                    <td>₹{{ item.current_price|floatformat:2 }}</td>#}
+{#                    <td>₹{{ item.market_value|floatformat:2 }}</td>#}
+                    <td style="color: {{ item.profit_loss_color }}">
+                        ₹{{ item.buy_profit_loss|floatformat:2 }}
+                        {% if item.buy_profit_loss > 0 %}
+                            <i class="fas fa-arrow-up" style="color: green;"></i> <!-- Profit Icon -->
+                        {% else %}
+                            <i class="fas fa-arrow-down" style="color: red;"></i> <!-- Loss Icon -->
+                        {% endif %}
+
+                    </td>
 
                         <td>
                         <a href="{% url 'stock_details' item.symbol %}" class="btn btn-success">More details</a>
@@ -56,17 +192,76 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
+{#                        <td></td>#}
+{#                        <td></td>#}
                         <td></td>
                         <td colspan="1" class="text-right bg-dark text-info"><strong>Total Profit/Loss:</strong></td>
-                        <td class="text-right bg-dark font-weight-bold" {% if total_profit_loss >= 0 %}style="color: green;"{% else %}style="color: red;"{% endif %}><strong>₹{{ total_profit_loss|floatformat:2 }}</strong></td>
+                        <td class="text-right bg-dark font-weight-bold" {% if total_profit_loss >= 0 %}style="color: green;"{% else %}style="color: red;"{% endif %}>
+                            <strong>₹{{ total_profit_loss|floatformat:2 }}</strong>
+                            {% if total_profit_loss > 0 %}
+                                <i class="fas fa-arrow-up" style="color: green;"></i> <!-- Profit Icon -->
+                            {% else %}
+                                <i class="fas fa-arrow-down" style="color: red;"></i> <!-- Loss Icon -->
+                            {% endif %}
+
+                        </td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
+        <!-- Pagination logic-->
+    <nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    <!-- First Page Link -->
+    {% if portfolio.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1" aria-label="First">
+        <span aria-hidden="true">&laquo;&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Previous Page Link -->
+    {% if portfolio.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    {% for num in portfolio.paginator.page_range %}
+      {% if portfolio.number == num %}
+        <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next Page Link -->
+    {% if portfolio.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Last Page Link -->
+    {% if portfolio.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.paginator.num_pages }}" aria-label="Last">
+        <span aria-hidden="true">&raquo;&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
         </div>
-<h2 class="text-center text-success">Sell Transactions</h2>
+        </div>
+
+<div class="tab-pane fade" id="sell" role="tabpanel" aria-labelledby="sell-tab">
         <div class="table-responsive ">
         <table class="table table-striped my-custom-table">
               <thead>
@@ -75,7 +270,9 @@
                   <th scope="col">Company symbol</th>
                   <th scope="col">Transaction type</th>
                   <th scope="col">Quantity</th>
+
                   <th scope="col">Total Investment</th>
+                    <th scope="col">Profit/Loss made</th>
 {#                  <th scope="col">Current Price</th>#}
 {#                  <th scope="col">Market value of stock</th>#}
 {#                  <th scope="col">Current Profit/Loss</th>#}
@@ -91,6 +288,14 @@
                         <td>{{ item.transaction_type }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>₹{{ item.total_investment|floatformat:2 }}</td>
+                        <td style="color: {{ item.profit_loss_color2 }}">
+                            ₹{{ item.sell_profit_loss|floatformat:2 }}
+                            {% if item.sell_profit_loss > 0 %}
+                                <i class="fas fa-arrow-up" style="color: green;"></i>
+                            {% else %}
+                                <i class="fas fa-arrow-down" style="color: red;"></i>
+                            {% endif %}
+                        </td>
 {#                    <td>₹{{ item.current_price|floatformat:2 }}</td>#}
 {#                    <td>₹{{ item.market_value|floatformat:2 }}</td>#}
 {#                    <td style="color: {{ item.profit_loss_color }}">₹{{ item.profit_loss|floatformat:2 }}</td>#}
@@ -100,9 +305,80 @@
                 </tr>
                 {% endif %}
                 {% endfor %}
+                <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+{#                        <td></td>#}
+{#                        <td></td>#}
+                        <td></td>
+                        <td colspan="1" class="text-right bg-dark text-info"><strong>Total Sell Profit/Loss:</strong></td>
+                        <td class="text-right bg-dark font-weight-bold" {% if total_sell_profit_loss >= 0 %}style="color: green;"{% else %}style="color: red;"{% endif %}>
+                            <strong>
+                            ₹{{ total_sell_profit_loss|floatformat:2 }}
+                            </strong>
+                            {% if total_sell_profit_loss > 0 %}
+                                <i class="fas fa-arrow-up" style="color: green;"></i> <!-- Profit Icon -->
+                            {% else %}
+                                <i class="fas fa-arrow-down" style="color: red;"></i> <!-- Loss Icon -->
+                            {% endif %}
+                        </td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
-        </div>
-        </div>
+        <!-- Pagination logic-->
+    <nav aria-label="Page navigation" class="mt-4">
+  <ul class="pagination justify-content-center">
+    <!-- First Page Link -->
+    {% if portfolio.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page=1" aria-label="First">
+        <span aria-hidden="true">&laquo;&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Previous Page Link -->
+    {% if portfolio.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.previous_page_number }}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    {% for num in portfolio.paginator.page_range %}
+      {% if portfolio.number == num %}
+        <li class="page-item active"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next Page Link -->
+    {% if portfolio.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.next_page_number }}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+
+    <!-- Last Page Link -->
+    {% if portfolio.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ portfolio.paginator.num_pages }}" aria-label="Last">
+        <span aria-hidden="true">&raquo;&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+        </div>        </div>
 </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>

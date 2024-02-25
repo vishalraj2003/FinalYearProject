@@ -1,9 +1,164 @@
 {% include 'header_user.html' %}
-<h2>Stock Details for {{ company_symbol }}</h2>
-{% if image_base64 %}
-    <img src="data:image/png;base64,{{ image_base64 }}" alt="Stock Transactions Graph">
-{% else %}
-    <p>No transaction data available.</p>
-{% endif %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .my-custom-table td, .my-custom-table th {
+            padding-right: 2px;
+            padding-left: 2px;
+        }
+    </style>
+    <title>Stock Details</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="container">
+{#        <h1 class="card-header bg-dark text-info text-center mb-5">{{ request.COOKIES.first_name }} {{ request.COOKIES.last_name }} has the following stocks: </h1>#}
 
+        <!-- Graphs Row -->
+        <div class="row">
+            <!-- Profit Graph -->
+            <div class="col-md-6 mb-4">
+                <h3>Profit Graph</h3>
+                {% if profit_image_base64 %}
+                    <img src="data:image/png;base64,{{ profit_image_base64 }}" alt="Profit Graph" class="img-fluid">
+                {% else %}
+                    <p>No profit data available.</p>
+                {% endif %}
+            </div>
+            
+            <!-- Transaction Quantity Graph -->
+            <div class="col-md-6 mb-4">
+                <h3>Transaction Quantity Graph</h3>
+                {% if quantity_image_base64 %}
+                    <img src="data:image/png;base64,{{ quantity_image_base64 }}" alt="Transaction Quantity Graph" class="img-fluid">
+                {% else %}
+                    <p>No transaction data available.</p>
+                {% endif %}
+            </div>
+        </div>
 
+        <!-- Second Row for Buy and Sell Price Graphs -->
+        <div class="row">
+            <!-- Buy Price Per Unit vs Date Graph -->
+            <div class="col-md-6 mb-4">
+                <h3>Buy Price Per Unit vs Date</h3>
+                {% if buy_price_image_base64 %}
+                    <img src="data:image/png;base64,{{ buy_price_image_base64 }}" alt="Buy Price Graph" class="img-fluid">
+                {% else %}
+                    <p>No buy price data available.</p>
+                {% endif %}
+            </div>
+
+            <!-- Sell Price Per Unit vs Date Graph -->
+            <div class="col-md-6 mb-4">
+                <h3>Sell Price Per Unit vs Date</h3>
+                {% if sell_price_image_base64 %}
+                    <img src="data:image/png;base64,{{ sell_price_image_base64 }}" alt="Sell Price Graph" class="img-fluid">
+                {% else %}
+                    <p>No sell price data available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{#<div class="container">#}
+{#    <!-- Time Range Tabs -->#}
+{#    <ul class="nav nav-tabs" id="timeRangeTabs">#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link active" id="1d-tab" data-toggle="tab" href="#1d" role="tab" aria-controls="1d" aria-selected="true">1D</a>#}
+{#      </li>#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" id="5d-tab" data-toggle="tab" href="#5d" role="tab" aria-controls="5d" aria-selected="false">5D</a>#}
+{#      </li>#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" id="1m-tab" data-toggle="tab" href="#1m" role="tab" aria-controls="1m" aria-selected="false">1M</a>#}
+{#      </li>#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" id="3m-tab" data-toggle="tab" href="#3m" role="tab" aria-controls="3m" aria-selected="false">3M</a>#}
+{#      </li>#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" id="6m-tab" data-toggle="tab" href="#6m" role="tab" aria-controls="6m" aria-selected="false">6M</a>#}
+{#      </li>#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" id="1y-tab" data-toggle="tab" href="#1y" role="tab" aria-controls="1y" aria-selected="false">1Y</a>#}
+{#      </li>#}
+{#      <li class="nav-item">#}
+{#        <a class="nav-link" id="2y-tab" data-toggle="tab" href="#2y" role="tab" aria-controls="2y" aria-selected="false">2Y</a>#}
+{#      </li>#}
+{#    </ul>#}
+{#    #}
+{#    <!-- Tab Panes -->#}
+{#    <div class="tab-content">#}
+{#      <div class="tab-pane fade show active" id="1d" role="tabpanel" aria-labelledby="1d-tab">#}
+{#        <div id="graphContainer" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#      <div class="tab-pane fade" id="5d" role="tabpanel" aria-labelledby="5d-tab">#}
+{#        <div id="plotlyGraphContainer5D" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#      <div class="tab-pane fade" id="1m" role="tabpanel" aria-labelledby="1m-tab">#}
+{#        <div id="plotlyGraphContainer1M" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#      <div class="tab-pane fade" id="3m" role="tabpanel" aria-labelledby="3m-tab">#}
+{#        <div id="plotlyGraphContainer3M" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#      <div class="tab-pane fade" id="6m" role="tabpanel" aria-labelledby="6m-tab">#}
+{#        <div id="plotlyGraphContainer6M" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#      <div class="tab-pane fade" id="1y" role="tabpanel" aria-labelledby="1y-tab">#}
+{#        <div id="plotlyGraphContainer1Y" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#      <div class="tab-pane fade" id="2y" role="tabpanel" aria-labelledby="2y-tab">#}
+{#        <div id="plotlyGraphContainer2Y" style="width:100%;height:500px;"></div>#}
+{#      </div>#}
+{#    </div>#}
+{#</div>#}
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{#<script>#}
+{#    $(document).ready(function() {#}
+{#    // Render default graph (1D)#}
+{#    fetchAndRenderGraph('1D');#}
+{##}
+{#    $('#timeRangeTabs a').on('click', function(e) {#}
+{#        e.preventDefault();#}
+{#        var timeRange = $(this).data('time-range');#}
+{#        fetchAndRenderGraph(timeRange);#}
+{#    });#}
+{##}
+{#    function fetchAndRenderGraph(timeRange) {#}
+{#        // Example AJAX call to fetch data for selected time range#}
+{#        // Replace '/api/stockData/' with your actual API endpoint#}
+{#        $.ajax({#}
+{#            url: `/api/stockData/${timeRange}`,#}
+{#            type: 'GET',#}
+{#            success: function(response) {#}
+{#                // Assuming response contains 'date', 'open', 'high', 'low', 'close'#}
+{#                renderPlotlyGraph(response, 'graphContainer');#}
+{#            },#}
+{#            error: function(error) {#}
+{#                console.log('Error fetching data:', error);#}
+{#            }#}
+{#        });#}
+{#    }#}
+{##}
+{#    function renderPlotlyGraph(stockData, containerId) {#}
+{#        var trace = {#}
+{#            x: stockData.date,#}
+{#            close: stockData.close,#}
+{#            decreasing: {line: {color: 'red'}},#}
+{#            high: stockData.high,#}
+{#            increasing: {line: {color: 'green'}},#}
+{#            low: stockData.low,#}
+{#            open: stockData.open,#}
+{#            type: 'candlestick',#}
+{#        };#}
+{#        var layout = {#}
+{#            title: `Stock Price (${stockData.timeRange})`,#}
+{#            xaxis: {title: 'Date'},#}
+{#            yaxis: {title: 'Price'}#}
+{#        };#}
+{#        Plotly.newPlot(containerId, [trace], layout);#}
+{#    }#}
+{#});#}
+{#</script>#}
+</body>
