@@ -47,7 +47,7 @@ class SellTransaction(models.Model):
 
 
 class CreditBalanceUpdate(models.Model):
-    user = models.ForeignKey('authentication_module.signupModel', on_delete=models.CASCADE)
+    user = models.EmailField(max_length=254,null=True)
     previous_balance = models.DecimalField(max_digits=15, decimal_places=2)
     updated_balance = models.DecimalField(max_digits=15, decimal_places=2)
     update_time = models.DateTimeField(auto_now_add=True)

@@ -4,16 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="Location tracker added">
-      <change afterPath="$PROJECT_DIR$/media/profile_pics/IMG-20240222-WA0095.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/migrations/0007_rename_price_per_unit_buytransaction_buy_price_per_unit_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/transaction/migrations/0008_selltransaction_sell_profit_loss.py" afterDir="false" />
+    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="portfolio updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/portfolio.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/portfolio.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/stock_details.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/stock_details.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transaction/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/transaction/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -176,7 +168,7 @@
       <workItem from="1708697359046" duration="766000" />
       <workItem from="1708698346124" duration="221000" />
       <workItem from="1708761863958" duration="8267000" />
-      <workItem from="1708823154978" duration="17580000" />
+      <workItem from="1708823154978" duration="19626000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -378,7 +370,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708769076098</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="portfolio updated">
+      <option name="closed" value="true" />
+      <created>1708844934020</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1708844934020</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -403,7 +403,8 @@
     <MESSAGE value="All set" />
     <MESSAGE value="added buy data and also given portfolio data" />
     <MESSAGE value="Location tracker added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Location tracker added" />
+    <MESSAGE value="portfolio updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="portfolio updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
