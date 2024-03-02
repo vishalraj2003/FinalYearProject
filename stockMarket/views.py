@@ -1,6 +1,14 @@
 import random
 from math import ceil
 from decimal import Decimal
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+from pandas import date_range
+from datetime import timedelta
+import joblib
 from django.db.models import Count
 from django.shortcuts import render, redirect
 import requests
@@ -46,6 +54,8 @@ import warnings
 from django.core.paginator import Paginator
 from functools import wraps
 from django.db import transaction as db_transaction
+
+from djangoProject import settings
 from transaction.models import *
 # from authentication_module.models import signupModel
 from django.db.models import Sum
@@ -74,7 +84,8 @@ def payment(request):
     current_time = datetime.now()
 
     user1 = credit_balance_update.objects.filter(email=user_email).all().order_by('-transaction_date')
-    user_buy1 = BuyTransaction.objects.filter(user=user_email, transaction_type='buy').all().order_by('-transaction_date')
+    user_buy1 = BuyTransaction.objects.filter(user=user_email, transaction_type='buy').all().order_by(
+        '-transaction_date')
     user_buy = BuyTransaction.objects.filter(user=user_email).first()
     date_buy = user_buy.transaction_date if user_buy else None
     transaction_type_buy = user_buy.transaction_type if user_buy else None
@@ -82,7 +93,8 @@ def payment(request):
     quantity = user_buy.quantity if user_buy else None
     total_price_buy = buy_price * quantity if user_buy else None
 
-    user_sell1 = SellTransaction.objects.filter(user=user_email, transaction_type='sell').all().order_by('-transaction_date')
+    user_sell1 = SellTransaction.objects.filter(user=user_email, transaction_type='sell').all().order_by(
+        '-transaction_date')
     user_sell = SellTransaction.objects.filter(user=user_email).first()
     date_sell = user_sell.transaction_date if user_sell else None
     transaction_type_sell = user_sell.transaction_type if user_sell else None
@@ -474,7 +486,7 @@ def sell_stock(request, company_symbol):
         else:
             return JsonResponse({"message": "Not enough stock", "status": "success"})
 
-        return JsonResponse({"message": "Stock sold successfully", "status": "success"})
+        return JsonResponse({"message": "Stock sold successfully. Check Portfolio", "status": "success"})
     else:
         return JsonResponse({"message": "Invalid request method.", "status": "error"})
 
@@ -549,7 +561,7 @@ def buy_stock(request, company_symbol):
         user_data.credit_balance -= total_price
         user_data.save()
 
-        return JsonResponse({"message": "Stock purchased successfully.", "status": "success"})
+        return JsonResponse({"message": "Stock purchased successfully. Check Portfolio.", "status": "success"})
 
     return JsonResponse({"message": "Invalid request method.", "status": "error"})
 
@@ -617,9 +629,53 @@ def get_stock_data(symbol, start_date, end_date):
     return data
 
 
+def get_stock_data_model(symbol):
+    stock = yf.Ticker(symbol)
+    data = stock.history(period='max')
+    return data
+
+
+def prepare_data(df):
+    df = df.reset_index()
+    df = df.drop(['Volume', 'Dividends', 'Stock Splits'], axis=1)
+    df['Close_10_days_avg'] = df['Close'].rolling(window=10).mean()
+    df.dropna(inplace=True)
+    return df
+
+
+def split_data(df):
+    X = df[['Close_10_days_avg']].values[:-7]
+    y = df['Close'].shift(-7).values[:-7]
+    return train_test_split(X, y, test_size=0.3, random_state=42)
+
+
+def train_model(X_train, y_train):
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
+    return model
+
+
+def predict_and_recommend(model, df):
+    last_date = df['Date'].iloc[-1]
+    next_7_days_dates = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=7)
+    last_10_days_avg = df['Close'].rolling(window=10).mean().iloc[-7:]
+    predictions = model.predict(np.array(last_10_days_avg).reshape(-1, 1))
+    predictions_with_dates = list(zip(next_7_days_dates.strftime('%Y-%m-%d'), predictions))
+    current_price = df['Close'].iloc[-1]
+    avg_predicted_price = np.mean(predictions)
+    recommendation = "Buy the stock." if avg_predicted_price > current_price else "Sell the stock."
+    return predictions_with_dates, recommendation
+
+
 def get_company_data(request, symbol):
     try:
         company = companyData.objects.get(symbol=symbol)
+        df = get_stock_data_model(symbol)
+        df_prepared = prepare_data(df)
+        X_train, X_test, y_train, y_test = split_data(df_prepared)
+        model = train_model(X_train, y_train)
+        predictions_with_dates, recommendation = predict_and_recommend(model, df_prepared)
+        print(predictions_with_dates)
         data = {
             'companyName': company.companyName,
             'symbol': company.symbol,
@@ -641,6 +697,8 @@ def get_company_data(request, symbol):
             'quote_price': company.quote_price,
             'volume': company.volume,
             'description': company.description,
+            'recommendation': recommendation,
+            'predictions_with_dates': predictions_with_dates,
         }
 
         # for graph
@@ -649,12 +707,16 @@ def get_company_data(request, symbol):
 
         stock_data = get_stock_data(symbol, '2021-01-01', formatted_date)
 
+
+
+
         formatted_stock_data = {
             'date': list(stock_data.index.strftime('%Y-%m-%d')),
             'open': list(stock_data['Open']),
             'high': list(stock_data['High']),
             'low': list(stock_data['Low']),
-            'close': list(stock_data['Close'])
+            'close': list(stock_data['Close']),
+
         }
 
         data['stockData'] = formatted_stock_data
@@ -726,6 +788,9 @@ def jump_updated(request):
     return response
 
 
+# The Django view
+
+
 def listing(request):
     if not is_user_logged_in(request):
         return redirect('login')
@@ -752,7 +817,7 @@ def listing(request):
         ).aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
         print("value of owner:", company['user_owns'])
 
-    paginator = Paginator(companies, 6)
+    paginator = Paginator(companies, 4)
     page_number = request.GET.get('page', 1)
     current_page = paginator.get_page(page_number)
     print(companyData)
@@ -775,7 +840,7 @@ def listing(request):
     # loginData = request.session.get('loginData')
     # print("login data is",loginData)
     page_range = range(start_page, end_page + 1)
-    print("value of owner (final):", company['user_owns'])
+    # print("value of owner (final):", company['user_owns'])
     data = {
         'companyData': current_page,
         'last_page': totalpage,
@@ -846,6 +911,7 @@ def update_nifty50():
 def login(request):
     if is_user_logged_in(request):
         return redirect('list')
+
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -1064,7 +1130,7 @@ def profile_setting_user(request):
             user_inner.first_name = first_name
             user_inner.last_name = last_name
             user_inner.email = email
-            user_inner.password = password
+            user_inner.password = make_password(password)
             if 'profile_pic' in request.FILES:
                 user_inner.profile_pic = request.FILES['profile_pic']
             user_inner.save()
@@ -1153,7 +1219,8 @@ def profile_setting(request):
             user_inner.first_name = first_name
             user_inner.last_name = last_name
             user_inner.email = email
-            user_inner.password = password
+
+            user_inner.password = make_password(password)
             if 'profile_pic' in request.FILES:
                 user_inner.profile_pic = request.FILES['profile_pic']
             user_inner.save()

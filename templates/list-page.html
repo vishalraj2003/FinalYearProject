@@ -10,7 +10,8 @@
         }
         #companyListContainer {
             max-height: 100vh;
-            overflow-y: auto; 
+            overflow-y: auto;
+            width: 100%;
         }
         
         @media (min-width: 992px) { 
@@ -18,11 +19,20 @@
                 max-width: 25%; 
             }
         }
-        
+        html, body {
+            height: 100%;
+            margin: 0;
+            {#overflow: hidden; /* This prevents the main page from scrolling */#}
+        }
         
         @media (max-width: 991px) {
             #companyListContainer {
                 max-width: 100%;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                width: 95vw;
             }
         }
     {#    eye catching button#}
@@ -53,17 +63,96 @@
     padding: 10px 20px;
 }
 
+.prediction-container {
+            padding: 20px;
+            background: #f9f9f9;
+        }
+
+        .prediction-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .prediction-date {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .prediction-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Dynamic background colors */
+        .color-1 { background-color: #f8d7da; }
+        .color-2 { background-color: #d4edda; }
+        .color-3 { background-color: #d1ecf1; }
+        .color-4 { background-color: #fff3cd; }
+        .color-5 { background-color: #fde2e4; }
+        .color-6 { background-color: #bee5eb; }
+    
     </style>
+
+<style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f2f5;
+            color: #333;
+            {#margin-top: 20px;#}
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: #fff;
+            padding: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .header-section h2 {
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header-section p {
+            font-size: 18px;
+            color: #bdc3c7;
+        }
+        
+
+        /* Default placeholder size */
+    #searchInput::placeholder {
+        font-size: 16px; /* Adjust the size as needed */
+    }
+
+    /* Smaller placeholder size for laptop screens */
+    @media (min-width: 992px) { /* Assuming laptop screens start from 992px in width */
+        #searchInput::placeholder {
+            font-size: 14px; /* Smaller font size for the placeholder */
+        }
+    }
+    </style>
+
+
+
 <body>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row justify-content-center">
         <!-- Sidebar / Company List -->
 
         <div class="col-12 col-md-5 col-lg-3 vh-100 overflow-auto" id="companyListContainer">
+        <!-- search box -->
         <div class="input-group mb-3" id="searchContainer">
         <form action="" method="GET">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search by Company Name or Symbol" id="searchInput" name="search" value="{{ search_query }}">
+            <input type="text" class="form-control" placeholder="Search Companies" id="searchInput" name="search" value="{{ search_query }}">
             <div class="input-group-append">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>
                 <a href="{% url 'list' %}" class="btn btn-outline-danger">Clear</a>
@@ -116,7 +205,7 @@
                 <div id="description"></div>
                 <div class="container-fluid border-4 p-3 ">
                     <div class="container card">
-                        <div class="row text-uppercase bg-success align-items-center" id="tips">
+                        <div class="row text-uppercase align-items-center prediction-container" id="tips">
 
                         </div>
 
@@ -157,6 +246,18 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
+    function shouldShowRow(data) {
+    return data;
+}
+    function splitDescription(description) {
+    const words = description.split(/\s+/); // Split by whitespace
+    if (words.length <= 50) {
+        return { firstPart: description, secondPart: '' };
+    }
+    const firstPart = words.slice(0, 50).join(' ');
+    const secondPart = words.slice(50).join(' ');
+    return { firstPart, secondPart };
+}
     function renderPlotlyGraph(stockData) {
     var trace = {
         x: stockData.date, // Array of dates
@@ -209,152 +310,104 @@
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                // Update the table with the returned data
-                {#$('#companyTitle').text(`${data.companyName} (${data.symbol})`);#}
-                {#$('#companyPrice').text(`₹${parseFloat(data.quote_price).toFixed(2)}`);#}
-                {#$('#description').html(`#}
-                {#    <h3 class="text-info">Description</h3>#}
-                {#    <p class="text-break text-justify">${data.description}</p>#}
-                {#`);#}
+                console.log(data)
+var recommendation = data.recommendation;
+console.log("my values" + recommendation);
+
+
+var predictionsHtml = `
+        {#<div class="text-center mb-5">#}
+        {#    <h2 class="mb-3">${data.recommendation}</h2>#}
+        {#    <p>Below are the future 7 day prices with dates:</p>#}
+        {#</div>#}
+        <div class="header-section text-center">
+            <h2 class="mb-3">Tip: ${data.recommendation}</h2>
+            <p>Below are the future 7 day prices with dates:</p>
+        </div>
+        <div class="row">`;
+
+const colorClasses = ['color-1', 'color-2', 'color-3', 'color-4', 'color-5', 'color-6'];
+
+
+if (data.predictions_with_dates) {
+    data.predictions_with_dates.forEach(function(prediction, index) {
+        const colorClass = colorClasses[index % colorClasses.length];
+        predictionsHtml += `
+            <div class="col-md-4">
+                <div class="prediction-card p-4 ${colorClass}">
+                    <h6 class="prediction-date">${prediction[0]}</h6>
+                    <p class="prediction-price">₹${parseFloat(prediction[1]).toFixed(3)}</p>
+                </div>
+            </div>`;
+    });
+}
+
+predictionsHtml += `</div></div>`;
                 $('#companyTitle').html(`
     <h1 class="display-4 text-center mb-4">${data.companyName} (${data.symbol})</h1>
 `);
+
+$('html, body').animate({
+            scrollTop: $("#companyTitle").offset().top - 100 // Adjust the offset as needed
+        }, 500); // 500ms for animation speed
+
 $('#companyPrice').text(`₹${parseFloat(data.quote_price).toFixed(2)}`);
+
+const { firstPart, secondPart } = splitDescription(data.description);
+
+// HTML to display the description
 $('#description').html(`
     <div class="card mt-4">
         <div class="card-header bg-info text-white">
             <h3 class="card-title">Description</h3>
         </div>
         <div class="card-body">
-            <p class="card-text">${data.description}</p>
+            <p class="card-text">${firstPart} <span id="moreText" style="display: none;">${secondPart}</span>
+            ${secondPart ? '<a href="#" id="moreLink">More Details</a>' : ''}</p>
         </div>
     </div>
 `);
-{#                $('#companyDetails').html(`#}
-{#                    ;#}
-{#                    <h3 class="text-info">Tabular summary</h3>#}
-{#                <div class="container mt-5">#}
-{#                    <div class="row">#}
-{#                        <div class="col">#}
-{##}
-{#                            <table class="table bg-light">#}
-{#                                <tbody>#}
-{#                                    <tr><td>Previous Close</td><td>${data.previous_close}</td></tr>#}
-{#                                    <tr><td>Open</td><td>${data.open_price}</td></tr>#}
-{#                                    <tr><td>Bid</td><td>${data.bid}</td></tr>#}
-{#                                    <tr><td>Ask</td><td>${data.ask}</td></tr>#}
-{#                                    <tr><td>Day's Range</td><td>${data.days_range}</td></tr>#}
-{#                                    <tr><td>52 Week Range</td><td>${data.fifty_two_week_range}</td></tr>#}
-{#                                    <tr><td>Volume</td><td>${data.volume}</td></tr>#}
-{#                                    <tr><td>Avg. Volume</td><td>${data.avg_volume}</td></tr>#}
-{#                                </tbody>#}
-{#                                 </table>#}
-{#                            </div>#}
-{#                            <div class="col">#}
-{#                                <table class="table">#}
-{#                                <tbody>#}
-{#                                    <tr><td>Market Cap</td><td>${data.market_cap}</td></tr>#}
-{#                                    <tr><td>Beta (5Y Monthly)</td><td>${data.beta_5y_monthly}</td></tr>#}
-{#                                    <tr><td>PE Ratio (TTM)</td><td>${data.pe_ratio_ttm}</td></tr>#}
-{#                                    <tr><td>EPS (TTM)</td><td>${data.eps_ttm}</td></tr>#}
-{#                                    <tr><td>Earnings Date</td><td>${data.earnings_date}</td></tr>#}
-{#                                    <tr><td>Forward Dividend & Yield</td><td>${data.forward_dividend_yield}</td></tr>#}
-{#                                    <tr><td>Ex-Dividend Date</td><td>${data.ex_dividend_date}</td></tr>#}
-{#                                    <tr><td>1y Target Est</td><td>${data.one_year_target_est}</td></tr>#}
-{#                                    <!-- ... more fields if needed -->#}
-{#                                </tbody>#}
-{#                            </table>#}
-{#                            #}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                `);#}
+$(document).on('click', '#moreLink', function(e) {
+    e.preventDefault();
+    $('#moreText').show(); // Show the rest of the text
+    $(this).hide(); // Hide the "More Details" link
+});
                 $('#companyDetails').html(`
-{#                    ;#}
-                    <div class="container mt-5">
-    <h3 class="text-info text-center mb-4">Tabular Summary</h3>
-    <div class="row">
-        <div class="col">
-            <table class="table table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <th scope="row">Previous Close</th>
-                        <td>${data.previous_close}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Open</th>
-                        <td>${data.open_price}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Bid</th>
-                        <td>${data.bid}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ask</th>
-                        <td>${data.ask}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Day's Range</th>
-                        <td>${data.days_range}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">52 Week Range</th>
-                        <td>${data.fifty_two_week_range}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Volume</th>
-                        <td>${data.volume}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Avg. Volume</th>
-                        <td>${data.avg_volume}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="col">
-            <table class="table table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <th scope="row">Market Cap</th>
-                        <td>${data.market_cap}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Beta (5Y Monthly)</th>
-                        <td>${data.beta_5y_monthly}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">PE Ratio (TTM)</th>
-                        <td>${data.pe_ratio_ttm}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">EPS (TTM)</th>
-                        <td>${data.eps_ttm}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Earnings Date</th>
-                        <td>${data.earnings_date}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Forward Dividend & Yield</th>
-                        <td>${data.forward_dividend_yield}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Ex-Dividend Date</th>
-                        <td>${data.ex_dividend_date}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">1y Target Est</th>
-                        <td>${data.one_year_target_est}</td>
-                    </tr>
-                    <!-- Add more fields if needed -->
-                </tbody>
-            </table>
+    <div class="container mt-5">
+        <h3 class="text-info text-center mb-4">Tabular Summary</h3>
+        <div class="row">
+            <div class="col">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        ${shouldShowRow(data.previous_close) ? `<tr><th scope="row">Previous Close</th><td>${data.previous_close}</td></tr>` : ''}
+                        ${shouldShowRow(data.open_price) ? `<tr><th scope="row">Open</th><td>${data.open_price}</td></tr>` : ''}
+                        ${shouldShowRow(data.bid) ? `<tr><th scope="row">Bid</th><td>${data.bid}</td></tr>` : ''}
+                        ${shouldShowRow(data.ask) ? `<tr><th scope="row">Ask</th><td>${data.ask}</td></tr>` : ''}
+                        ${shouldShowRow(data.days_range) ? `<tr><th scope="row">Day's Range</th><td>${data.days_range}</td></tr>` : ''}
+                        ${shouldShowRow(data.fifty_two_week_range) ? `<tr><th scope="row">52 Week Range</th><td>${data.fifty_two_week_range}</td></tr>` : ''}
+                        ${shouldShowRow(data.volume) ? `<tr><th scope="row">Volume</th><td>${data.volume}</td></tr>` : ''}
+                        ${shouldShowRow(data.avg_volume) ? `<tr><th scope="row">Avg. Volume</th><td>${data.avg_volume}</td></tr>` : ''}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col">
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                        ${shouldShowRow(data.market_cap) ? `<tr><th scope="row">Market Cap</th><td>${data.market_cap}</td></tr>` : ''}
+                        ${shouldShowRow(data.beta_5y_monthly) ? `<tr><th scope="row">Beta (5Y Monthly)</th><td>${data.beta_5y_monthly}</td></tr>` : ''}
+                        ${shouldShowRow(data.pe_ratio_ttm) ? `<tr><th scope="row">PE Ratio (TTM)</th><td>${data.pe_ratio_ttm}</td></tr>` : ''}
+                        ${shouldShowRow(data.eps_ttm) ? `<tr><th scope="row">EPS (TTM)</th><td>${data.eps_ttm}</td></tr>` : ''}
+                        ${shouldShowRow(data.earnings_date) ? `<tr><th scope="row">Earnings Date</th><td>${data.earnings_date}</td></tr>` : ''}
+                        ${shouldShowRow(data.forward_dividend_yield) ? `<tr><th scope="row">Forward Dividend & Yield</th><td>${data.forward_dividend_yield}</td></tr>` : ''}
+                        ${shouldShowRow(data.ex_dividend_date) ? `<tr><th scope="row">Ex-Dividend Date</th><td>${data.ex_dividend_date}</td></tr>` : ''}
+                        ${shouldShowRow(data.one_year_target_est) ? `<tr><th scope="row">1y Target Est</th><td>${data.one_year_target_est}</td></tr>` : ''}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+`);
 
-                `);
                 $('#currentPriceInput').val(parseFloat(data.quote_price).toFixed(2));
                 $('#button').html(`
 {#                    {% include 'transaction.html' %}#}
@@ -386,51 +439,7 @@ $('#description').html(`
                 $('#companySymbolInput').val(data.symbol);
                 $('#companySymbolInput2').val(data.symbol);
 
-                $('#tips').html(`
-                <div class="container">
-    <div class="row justify-content-center text-center">
-        <div class="col">
-            <h2>You should buy this stock !!!</h2>
-        </div>
-    </div>
-    <div class="row justify-content-center text-center mb-4">
-        <div class="col">
-            <p>Below are the future 7 day prices with dates</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col border" style="background-color: #f8d7da;">
-            <h3 class="text-center pt-2">Date 1</h3>
-            <p class="text-center">Price 1</p>
-        </div>
-        <div class="col border" style="background-color: #ffedcc;">
-            <h3 class="text-center pt-2">Date 2</h3>
-            <p class="text-center">Price 2</p>
-        </div>
-        <div class="col border" style="background-color: #fff3cd;">
-            <h3 class="text-center pt-2">Date 3</h3>
-            <p class="text-center">Price 3</p>
-        </div>
-        <div class="col border" style="background-color: #d4edda;">
-            <h3 class="text-center pt-2">Date 4</h3>
-            <p class="text-center">Price 4</p>
-        </div>
-        <div class="col border" style="background-color: #d1ecf1;">
-            <h3 class="text-center pt-2">Date 5</h3>
-            <p class="text-center">Price 5</p>
-        </div>
-        <div class="col border" style="background-color: #c4b1f9;">
-            <h3 class="text-center pt-2">Date 6</h3>
-            <p class="text-center">Price 6</p>
-        </div>
-        <div class="col border" style="background-color: #f8d7da;">
-            <h3 class="text-center pt-2">Date 7</h3>
-            <p class="text-center">Price 7</p>
-        </div>
-    </div>
-</div>
-
-`);
+                $('#tips').html(predictionsHtml);
 
                 {#$('#companySymbolInput').val(data.symbol);#}
                 renderPlotlyGraph(data.stockData);
@@ -440,6 +449,7 @@ $('#description').html(`
                 $('#companyDetails').html(`<p>Error fetching data for ${symbol}</p>`);
             }
         });
+
     });
 });
     $(document).on('click', '.btn-buy', function() {

@@ -19,6 +19,7 @@ from django.urls import path
 from stockMarket import views
 from django.conf import settings
 from django.conf.urls.static import static
+
 # importing views
 
 # note: otp-verify-login-login for login otp
@@ -50,7 +51,10 @@ urlpatterns = [
     path('stock_details/<str:company_symbol>/', views.stock_details, name='stock_details'),
     path('traffic/', views.traffic_monitor, name='traffic'),
     path('payment/', views.payment, name='payment'),
+
+    # path('stock-prediction/<str:symbol>/', views.stock_prediction, name='stock_prediction'),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

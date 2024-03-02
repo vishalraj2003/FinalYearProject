@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="model updated">
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/0002_rename_timestamp_credit_balance_update_transaction_date.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/0003_credit_balance_update_transaction_type.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon-12-1024x576.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/media/profile_pics/Doraemon-12-1024x576_k16tJwb.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/final_pridiction_model.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stock_tips.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/list-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/list-page.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +57,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "django.template.preview.state": "SHOW_EDITOR",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/hp/Videos/PASK Infotech/myAdmin",
+    "last_opened_file_path": "C:/Users/hp/PycharmProjects/djangoProject/stockMarket",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -67,10 +74,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hp\PycharmProjects\djangoProject\stockMarket" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\credit_balance_update" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\templates" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\media\profile_pics" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\static" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hp\PycharmProjects\djangoProject\resources" />
     </key>
   </component>
   <component name="RunManager">
@@ -179,6 +190,7 @@
       <workItem from="1709276205396" duration="4798000" />
       <workItem from="1709283198796" duration="19000" />
       <workItem from="1709384427830" duration="8674000" />
+      <workItem from="1709401454395" duration="19915000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -404,7 +416,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709392624643</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="model updated">
+      <option name="closed" value="true" />
+      <created>1709401524437</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1709401524437</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,13 +463,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
-          <line>268</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/templates/list-page.html</url>
-          <line>389</line>
-          <option name="timeStamp" value="5" />
+          <line>793</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
