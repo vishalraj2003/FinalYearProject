@@ -4,8 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="portfolio updated">
+    <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="model updated">
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/0001_initial.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/payment.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/authentication_module/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication_module/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/list-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/list-page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/portfolio.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/portfolio.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/transaction/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,34 +55,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Django Server.djangoProject.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/Videos/PASK Infotech/Finding specific News&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Django Server.djangoProject.executor": "Run",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/hp/Videos/PASK Infotech/myAdmin",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hp\PycharmProjects\djangoProject\credit_balance_update" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\templates" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\media\profile_pics" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\static" />
@@ -168,7 +186,15 @@
       <workItem from="1708697359046" duration="766000" />
       <workItem from="1708698346124" duration="221000" />
       <workItem from="1708761863958" duration="8267000" />
-      <workItem from="1708823154978" duration="19626000" />
+      <workItem from="1708823154978" duration="20626000" />
+      <workItem from="1708870757797" duration="621000" />
+      <workItem from="1708910865311" duration="1292000" />
+      <workItem from="1709042679850" duration="1262000" />
+      <workItem from="1709206446376" duration="1535000" />
+      <workItem from="1709215373972" duration="2928000" />
+      <workItem from="1709276205396" duration="4798000" />
+      <workItem from="1709283198796" duration="19000" />
+      <workItem from="1709384427830" duration="7557000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -378,7 +404,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708844934020</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="model updated">
+      <option name="closed" value="true" />
+      <created>1708863249091</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1708863249091</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -404,7 +438,8 @@
     <MESSAGE value="added buy data and also given portfolio data" />
     <MESSAGE value="Location tracker added" />
     <MESSAGE value="portfolio updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="portfolio updated" />
+    <MESSAGE value="model updated" />
+    <option name="LAST_COMMIT_MESSAGE" value="model updated" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -416,8 +451,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
-          <line>175</line>
+          <line>268</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/templates/list-page.html</url>
+          <line>389</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

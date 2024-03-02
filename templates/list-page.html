@@ -25,6 +25,34 @@
                 max-width: 100%;
             }
         }
+    {#    eye catching button#}
+        /* Custom styling for the Buy and Sell buttons */
+.btn-primary,
+.btn-danger {
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.btn-primary:hover,
+.btn-danger:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary:focus,
+.btn-danger:focus {
+    box-shadow: none;
+}
+
+.rounded-pill {
+    border-radius: 50px;
+}
+
+/* Optional: Adjust padding and font size */
+.btn1 {
+    font-size: 18px;
+    padding: 10px 20px;
+}
+
     </style>
 <body>
 <div class="container-fluid">
@@ -86,12 +114,10 @@
                 </div>
                 
                 <div id="description"></div>
-                <div id="plotlyGraphContainer"  class="bg-light" style="width:100%;height:500px;"></div>
-                <div id="companyDetails" class="bg-light"></div>
-                <div class="container-fluid">
-                    <div class="container">
+                <div class="container-fluid border-4 p-3 ">
+                    <div class="container card">
                         <div class="row text-uppercase bg-success align-items-center" id="tips">
-                            
+
                         </div>
 
 
@@ -101,6 +127,11 @@
 
                     </div>
                 </div>
+                <div id="plotlyGraphContainer"  class="bg-light card m-3" style="width:100%;height:500px;"></div>
+                <div id="companyDetails" class="card p-3"></div>
+
+
+
 
 
 
@@ -130,12 +161,12 @@
     var trace = {
         x: stockData.date, // Array of dates
         close: stockData.close, // Array of close prices
-        decreasing: {line: {color: 'red'}}, 
+        decreasing: {line: {color: 'red'}},
         high: stockData.high, // Array of high prices
-        increasing: {line: {color: 'green'}}, 
+        increasing: {line: {color: 'green'}},
         low: stockData.low, // Array of low prices
         open: stockData.open, // Array of open prices
-        type: 'candlestick', 
+        type: 'candlestick',
     };
 
     var layout = {
@@ -167,11 +198,11 @@
             $('#searchInput').val('');
             window.location.href = '{% url 'list' %}';
         });
-       
+
     $('#companyList a').on('click', function(e) {
         e.preventDefault();
         const symbol = $(this).data('company');
-        
+
 
         $.ajax({
             url: `/api/company/${symbol}/`,  // Make sure to use the correct URL
@@ -179,50 +210,150 @@
             dataType: 'json',
             success: function(data) {
                 // Update the table with the returned data
-                $('#companyTitle').text(`${data.companyName} (${data.symbol})`);
-                $('#companyPrice').text(`₹${parseFloat(data.quote_price).toFixed(2)}`);
-                $('#description').html(`
-                    <h3 class="text-info">Description</h3>
-                    <p class="text-break text-justify">${data.description}</p>
-                `);
+                {#$('#companyTitle').text(`${data.companyName} (${data.symbol})`);#}
+                {#$('#companyPrice').text(`₹${parseFloat(data.quote_price).toFixed(2)}`);#}
+                {#$('#description').html(`#}
+                {#    <h3 class="text-info">Description</h3>#}
+                {#    <p class="text-break text-justify">${data.description}</p>#}
+                {#`);#}
+                $('#companyTitle').html(`
+    <h1 class="display-4 text-center mb-4">${data.companyName} (${data.symbol})</h1>
+`);
+$('#companyPrice').text(`₹${parseFloat(data.quote_price).toFixed(2)}`);
+$('#description').html(`
+    <div class="card mt-4">
+        <div class="card-header bg-info text-white">
+            <h3 class="card-title">Description</h3>
+        </div>
+        <div class="card-body">
+            <p class="card-text">${data.description}</p>
+        </div>
+    </div>
+`);
+{#                $('#companyDetails').html(`#}
+{#                    ;#}
+{#                    <h3 class="text-info">Tabular summary</h3>#}
+{#                <div class="container mt-5">#}
+{#                    <div class="row">#}
+{#                        <div class="col">#}
+{##}
+{#                            <table class="table bg-light">#}
+{#                                <tbody>#}
+{#                                    <tr><td>Previous Close</td><td>${data.previous_close}</td></tr>#}
+{#                                    <tr><td>Open</td><td>${data.open_price}</td></tr>#}
+{#                                    <tr><td>Bid</td><td>${data.bid}</td></tr>#}
+{#                                    <tr><td>Ask</td><td>${data.ask}</td></tr>#}
+{#                                    <tr><td>Day's Range</td><td>${data.days_range}</td></tr>#}
+{#                                    <tr><td>52 Week Range</td><td>${data.fifty_two_week_range}</td></tr>#}
+{#                                    <tr><td>Volume</td><td>${data.volume}</td></tr>#}
+{#                                    <tr><td>Avg. Volume</td><td>${data.avg_volume}</td></tr>#}
+{#                                </tbody>#}
+{#                                 </table>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <table class="table">#}
+{#                                <tbody>#}
+{#                                    <tr><td>Market Cap</td><td>${data.market_cap}</td></tr>#}
+{#                                    <tr><td>Beta (5Y Monthly)</td><td>${data.beta_5y_monthly}</td></tr>#}
+{#                                    <tr><td>PE Ratio (TTM)</td><td>${data.pe_ratio_ttm}</td></tr>#}
+{#                                    <tr><td>EPS (TTM)</td><td>${data.eps_ttm}</td></tr>#}
+{#                                    <tr><td>Earnings Date</td><td>${data.earnings_date}</td></tr>#}
+{#                                    <tr><td>Forward Dividend & Yield</td><td>${data.forward_dividend_yield}</td></tr>#}
+{#                                    <tr><td>Ex-Dividend Date</td><td>${data.ex_dividend_date}</td></tr>#}
+{#                                    <tr><td>1y Target Est</td><td>${data.one_year_target_est}</td></tr>#}
+{#                                    <!-- ... more fields if needed -->#}
+{#                                </tbody>#}
+{#                            </table>#}
+{#                            #}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                `);#}
                 $('#companyDetails').html(`
 {#                    ;#}
-                    <h3 class="text-info">Tabular summary</h3>
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="col">
+                    <div class="container mt-5">
+    <h3 class="text-info text-center mb-4">Tabular Summary</h3>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Previous Close</th>
+                        <td>${data.previous_close}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Open</th>
+                        <td>${data.open_price}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Bid</th>
+                        <td>${data.bid}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ask</th>
+                        <td>${data.ask}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Day's Range</th>
+                        <td>${data.days_range}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">52 Week Range</th>
+                        <td>${data.fifty_two_week_range}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Volume</th>
+                        <td>${data.volume}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Avg. Volume</th>
+                        <td>${data.avg_volume}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                    <tr>
+                        <th scope="row">Market Cap</th>
+                        <td>${data.market_cap}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Beta (5Y Monthly)</th>
+                        <td>${data.beta_5y_monthly}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">PE Ratio (TTM)</th>
+                        <td>${data.pe_ratio_ttm}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">EPS (TTM)</th>
+                        <td>${data.eps_ttm}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Earnings Date</th>
+                        <td>${data.earnings_date}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Forward Dividend & Yield</th>
+                        <td>${data.forward_dividend_yield}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Ex-Dividend Date</th>
+                        <td>${data.ex_dividend_date}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">1y Target Est</th>
+                        <td>${data.one_year_target_est}</td>
+                    </tr>
+                    <!-- Add more fields if needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-                            <table class="table bg-light">
-                                <tbody>
-                                    <tr><td>Previous Close</td><td>${data.previous_close}</td></tr>
-                                    <tr><td>Open</td><td>${data.open_price}</td></tr>
-                                    <tr><td>Bid</td><td>${data.bid}</td></tr>
-                                    <tr><td>Ask</td><td>${data.ask}</td></tr>
-                                    <tr><td>Day's Range</td><td>${data.days_range}</td></tr>
-                                    <tr><td>52 Week Range</td><td>${data.fifty_two_week_range}</td></tr>
-                                    <tr><td>Volume</td><td>${data.volume}</td></tr>
-                                    <tr><td>Avg. Volume</td><td>${data.avg_volume}</td></tr>
-                                </tbody>
-                                 </table>
-                            </div>
-                            <div class="col">
-                                <table class="table">
-                                <tbody>
-                                    <tr><td>Market Cap</td><td>${data.market_cap}</td></tr>
-                                    <tr><td>Beta (5Y Monthly)</td><td>${data.beta_5y_monthly}</td></tr>
-                                    <tr><td>PE Ratio (TTM)</td><td>${data.pe_ratio_ttm}</td></tr>
-                                    <tr><td>EPS (TTM)</td><td>${data.eps_ttm}</td></tr>
-                                    <tr><td>Earnings Date</td><td>${data.earnings_date}</td></tr>
-                                    <tr><td>Forward Dividend & Yield</td><td>${data.forward_dividend_yield}</td></tr>
-                                    <tr><td>Ex-Dividend Date</td><td>${data.ex_dividend_date}</td></tr>
-                                    <tr><td>1y Target Est</td><td>${data.one_year_target_est}</td></tr>
-                                    <!-- ... more fields if needed -->
-                                </tbody>
-                            </table>
-                            
-                        </div>
-                    </div>
-                </div>
                 `);
                 $('#currentPriceInput').val(parseFloat(data.quote_price).toFixed(2));
                 $('#button').html(`
@@ -234,7 +365,7 @@
 
                                 <input type="hidden" readonly name="company_symbol" id="companySymbolInput">
                                 {#<p>sysmbol is ${data.symbol}</p>#}
-                                <button type="submit" class="btn-lg btn-primary">Buy</button>
+                                <button type="submit" class="btn1 btn-lg btn-primary rounded-pill px-4 py-2">Buy</button>
 
                                 {#<button type="submit" class="btn btn-danger btn-lg font-weight-bold">Sell</button>#}
                                 </form>
@@ -244,7 +375,7 @@
 
                                      <input type="hidden" readonly name="company_symbol" id="companySymbolInput2">
                                     {#<p>sysmbol is ${data.symbol}</p>#}
-                                    <button type="submit" class="btn-lg btn-danger">Sell</button>
+                                    <button type="submit" class="btn1 btn-lg btn-danger rounded-pill px-4 py-2">Sell</button>
 
                                     {#<button type="submit" class="btn btn-danger btn-lg font-weight-bold">Sell</button>#}
                                 </form>
@@ -254,9 +385,53 @@
                 `);
                 $('#companySymbolInput').val(data.symbol);
                 $('#companySymbolInput2').val(data.symbol);
-                
-                $('#tips').html(`<br><h4 class="text-center">Tips will be shown over here.</h4><br>`);
-                
+
+                $('#tips').html(`
+                <div class="container">
+    <div class="row justify-content-center text-center">
+        <div class="col">
+            <h2>You should buy this stock !!!</h2>
+        </div>
+    </div>
+    <div class="row justify-content-center text-center mb-4">
+        <div class="col">
+            <p>Below are the future 7 day prices with dates</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border" style="background-color: #f8d7da;">
+            <h3 class="text-center pt-2">Date 1</h3>
+            <p class="text-center">Price 1</p>
+        </div>
+        <div class="col border" style="background-color: #ffedcc;">
+            <h3 class="text-center pt-2">Date 2</h3>
+            <p class="text-center">Price 2</p>
+        </div>
+        <div class="col border" style="background-color: #fff3cd;">
+            <h3 class="text-center pt-2">Date 3</h3>
+            <p class="text-center">Price 3</p>
+        </div>
+        <div class="col border" style="background-color: #d4edda;">
+            <h3 class="text-center pt-2">Date 4</h3>
+            <p class="text-center">Price 4</p>
+        </div>
+        <div class="col border" style="background-color: #d1ecf1;">
+            <h3 class="text-center pt-2">Date 5</h3>
+            <p class="text-center">Price 5</p>
+        </div>
+        <div class="col border" style="background-color: #c4b1f9;">
+            <h3 class="text-center pt-2">Date 6</h3>
+            <p class="text-center">Price 6</p>
+        </div>
+        <div class="col border" style="background-color: #f8d7da;">
+            <h3 class="text-center pt-2">Date 7</h3>
+            <p class="text-center">Price 7</p>
+        </div>
+    </div>
+</div>
+
+`);
+
                 {#$('#companySymbolInput').val(data.symbol);#}
                 renderPlotlyGraph(data.stockData);
             },

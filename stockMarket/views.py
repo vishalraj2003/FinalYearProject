@@ -5,9 +5,13 @@ from django.db.models import Count
 from django.shortcuts import render, redirect
 import requests
 import time
+from itertools import chain
+from operator import attrgetter
 import psutil
 import os
+from django.contrib.auth.hashers import make_password
 from datetime import datetime
+from django.contrib.auth.hashers import check_password
 
 from django.template.loader import render_to_string
 
@@ -51,6 +55,7 @@ import base64
 from io import BytesIO
 from updateTracker.models import UpdateTracker
 from authentication_module.models import signupModel
+from credit_balance_update.models import credit_balance_update
 
 
 # from django.http import HttpResponse
@@ -58,6 +63,94 @@ from authentication_module.models import signupModel
 
 # Create your views here.
 # context = {}
+
+
+def payment(request):
+    user_email = request.COOKIES.get('email')
+    user2 = signupModel.objects.filter(email=user_email).all()
+    user = signupModel.objects.get(email=user_email)
+    user_credit_balancef = float(user.credit_balance)
+    amount = float(request.POST.get('amount', 0))
+    current_time = datetime.now()
+
+    user1 = credit_balance_update.objects.filter(email=user_email).all().order_by('-transaction_date')
+    user_buy1 = BuyTransaction.objects.filter(user=user_email, transaction_type='buy').all().order_by('-transaction_date')
+    user_buy = BuyTransaction.objects.filter(user=user_email).first()
+    date_buy = user_buy.transaction_date if user_buy else None
+    transaction_type_buy = user_buy.transaction_type if user_buy else None
+    buy_price = user_buy.buy_price_per_unit if user_buy else None
+    quantity = user_buy.quantity if user_buy else None
+    total_price_buy = buy_price * quantity if user_buy else None
+
+    user_sell1 = SellTransaction.objects.filter(user=user_email, transaction_type='sell').all().order_by('-transaction_date')
+    user_sell = SellTransaction.objects.filter(user=user_email).first()
+    date_sell = user_sell.transaction_date if user_sell else None
+    transaction_type_sell = user_sell.transaction_type if user_sell else None
+    sell_price = user_sell.sell_price_per_unit if user_sell else None
+    quantity = user_sell.quantity if user_sell else None
+    total_price_sell = sell_price * quantity if user_sell else None
+    # user1 = credit_balance_update.objects
+
+    combined_transactions = list(chain(user_buy1, user_sell1, user1))
+    sorted_transactions = sorted(combined_transactions, key=attrgetter('transaction_date'), reverse=True)
+
+    all_transactions = sorted_transactions
+
+    paginator = Paginator(all_transactions, 5)
+
+    page_number = request.GET.get('page')
+    all_transactions_final = paginator.get_page(page_number)
+
+    try:
+        transactions_paginated = paginator.page(page_number)
+    except PageNotAnInteger:
+        transactions_paginated = paginator.page(1)
+    except EmptyPage:
+        transactions_paginated = paginator.page(paginator.num_pages)
+
+    if request.method == 'POST':
+        user1 = credit_balance_update.objects.all()
+        user1.email = user_email
+        user_credit_balance1 = float(user.credit_balance)
+        user1.previous_balance = user_credit_balance1
+        user_credit_balancef = amount + user_credit_balance1
+        user.credit_balance = user_credit_balancef
+        user1.current_balance = user_credit_balancef
+        user1.transaction_date = current_time
+
+        # time1 = user1.timestamp
+        credit_balance_update.objects.create(
+            email=user_email,
+            previous_balance=user_credit_balance1,
+            current_balance=user_credit_balancef,
+            transaction_type='credit',
+            transaction_date=current_time
+        )
+
+        user.save()
+        messages.success(request, 'Balance added successfully!')
+        return redirect('payment')
+
+    context = {
+        'user_credit_balancef': user_credit_balancef,
+        'email': user_email,
+        'amount': amount if request.method == 'POST' else 0,
+        'date_buy': date_buy,
+        'date_sell': date_sell,
+        'total_price_buy': total_price_buy,
+        'total_price_sell': total_price_sell,
+        'transaction_type_sell': transaction_type_sell,
+        'transaction_type_buy': transaction_type_buy,
+        'user_buy': user_buy1,
+        # 'user_sell':user_sell,
+        'user_sell': user_sell1,
+        'time': current_time,
+        'user1': user1,
+        'transactions_paginated': transactions_paginated,
+
+    }
+
+    return render(request, 'payment.html', context)
 
 
 def stock_details(request, company_symbol):
@@ -218,7 +311,7 @@ def portfolioView(request):
                 total_investment = Decimal(0)
 
             market_value = trans['total_quantity'] * current_price
-            profit_loss = market_value - total_investment
+            profit_loss = Decimal(market_value) - Decimal(total_investment)
             if trans['transaction_type'] == 'buy':
                 total_profit_loss += profit_loss
 
@@ -356,8 +449,12 @@ def sell_stock(request, company_symbol):
             )
             transaction.save()
 
+            user_data = signupModel.objects.filter(email=user_email).first()
+
             buy_price = buy_transaction.buy_price_per_unit * quantity_to_sell
             sell_price = Decimal(company.quote_price) * quantity_to_sell
+            user_data.credit_balance += sell_price
+            user_data.save()
             profit_loss = sell_price - buy_price
 
             # Create SellTransaction
@@ -447,6 +544,10 @@ def buy_stock(request, company_symbol):
             quantity=quantity,
             buy_price_per_unit=price_per_unit,
         )
+        user_data = signupModel.objects.filter(email=user_email).first()
+        total_price = Decimal(price_per_unit) * quantity
+        user_data.credit_balance -= total_price
+        user_data.save()
 
         return JsonResponse({"message": "Stock purchased successfully.", "status": "success"})
 
@@ -748,9 +849,10 @@ def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
+        # hashed_password = make_password(password)
         try:
             user_inner = signupModel.objects.get(email=email)
-            if user_inner.password == password:
+            if check_password(password, user_inner.password):
                 first_name = user_inner.first_name
                 last_name = user_inner.last_name
                 image = user_inner.profile_pic.url
@@ -1238,12 +1340,12 @@ def signup(request):
 
         # Generating OTP for verification
         otp_a = random.randint(100000, 999999)
-
+        hashed_password = make_password(password)
         request.session['signup_data'] = {
             'firstName': firstName,
             'lastName': lastName,
             'email': email,
-            'password': password,
+            'password': hashed_password,
             'otp_a': otp_a
         }
         # context = {

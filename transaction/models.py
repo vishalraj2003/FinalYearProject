@@ -28,7 +28,7 @@ class BuyTransaction(models.Model):
     transaction_date = models.DateTimeField(auto_now_add=True,null=True)
 
     def total_amount(self):
-        return self.quantity * self.price_per_unit
+        return self.quantity * self.buy_price_per_unit
 
 
 class SellTransaction(models.Model):
