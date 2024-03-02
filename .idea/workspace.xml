@@ -5,25 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="model updated">
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/apps.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/credit_balance_update/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/payment.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/0002_rename_timestamp_credit_balance_update_transaction_date.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/credit_balance_update/migrations/0003_credit_balance_update_transaction_type.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/authentication_module/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/authentication_module/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/list-page.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/list-page.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/portfolio.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/portfolio.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transaction/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/transaction/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +178,7 @@
       <workItem from="1709215373972" duration="2928000" />
       <workItem from="1709276205396" duration="4798000" />
       <workItem from="1709283198796" duration="19000" />
-      <workItem from="1709384427830" duration="7557000" />
+      <workItem from="1709384427830" duration="8674000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -412,7 +396,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708863249091</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="model updated">
+      <option name="closed" value="true" />
+      <created>1709392624643</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1709392624643</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
