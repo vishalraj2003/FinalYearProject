@@ -13,7 +13,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text bg-dark text-info" id="">Your balance</span>
                           </div>
-                          <input type="number" class="form-control bg-primary fw-bolder " readonly placeholder="{{ user.credit_balance }}">
+                          <input type="number" id="userBalance" class="form-control bg-primary fw-bolder" readonly placeholder="Your balance" value="{{ user.credit_balance }}">
                         </div>
 {#                  </ul>#}
 {#                  <ul class="list-group list-group-flush">#}
@@ -55,10 +55,17 @@
         </div>
 </div>
 <script>
+    // Define JavaScript variables from Django template variables
+    var userCreditBalance = parseFloat("{{ user.credit_balance }}");
+    var companyQuotePrice = parseFloat("{{ company.quote_price }}");
+
     document.getElementById('purchaseForm').addEventListener('submit', function(e) {
         e.preventDefault();
         var formData = new FormData(this);
+        var quantityInput = document.getElementById('quantity'); // Get the quantity input
+        var balanceInput = document.querySelector('input[placeholder="{{ user.credit_balance }}"]'); // Get the balance input
         
+        var balanceInput = document.getElementById('userBalance');
         fetch("{% url 'buy_stock' company.symbol %}", {
             method: 'POST',
             body: formData,
@@ -71,17 +78,27 @@
             var messageContainer = document.getElementById('messageContainer');
             messageContainer.innerHTML = ''; // Clear previous messages
             
-            // Assuming the response data contains a field 'message'
-            if (data.message) {
-                showMessage(data.message);
+            // Show the message from the response
+            showMessage(data.message, data.status);
+
+            // If the purchase was successful, update the displayed balance
+            if(data.status === "success") {
+                // Calculate new balance
+                var newBalance = userCreditBalance - (quantityInput.value * companyQuotePrice);
+                balanceInput.placeholder = newBalance.toFixed(2); // Update the placeholder with the new balance
+                balanceInput.value = newBalance.toFixed(2);// Update the value if it's not a placeholder
+                console.log(newBalance);
             }
         })
         .catch(error => console.error('Error:', error));
     });
-    function showMessage(message) {
+
+    function showMessage(message, status) {
         var messageContainer = document.getElementById('messageContainer');
         messageContainer.textContent = message;
         messageContainer.style.display = 'block';
+        messageContainer.className = status === "success" ? 'alert alert-success' : 'alert alert-danger';
     }
 </script>
+
 

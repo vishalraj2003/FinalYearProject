@@ -55,32 +55,6 @@
         </div>
 </div>
 <script>
-    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        
-        fetch("{% url 'sell_stock' company.symbol %}", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            var messageContainer = document.getElementById('messageContainer');
-            messageContainer.innerHTML = ''; // Clear previous messages
-            
-            // Assuming the response data contains a field 'message'
-            if (data.message) {
-                showMessage(data.message, data.status);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showMessage('An error occurred. Please try again.', 'error');
-        });
-    });
     function showMessage(message, status) {
         var messageContainer = document.getElementById('messageContainer');
         messageContainer.innerHTML = message; // Set the message text
@@ -94,5 +68,33 @@
             messageContainer.classList.add('alert', 'alert-danger');
         }
     }
+    document.getElementById('purchaseForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var balanceInput = document.querySelector('input[placeholder="{{ user.credit_balance }}"]'); // Update the selector as needed
+    
+        fetch("{% url 'sell_stock' company.symbol %}", {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            var messageContainer = document.getElementById('messageContainer');
+            showMessage(data.message, data.status);
+    
+            if (data.status === "success") {
+                var newBalance = parseFloat(data.new_balance);
+                balanceInput.value = newBalance.toFixed(2); // Update the input field with the new balance
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showMessage('An error occurred. Please try again.', 'error');
+        });
+    });
+    
 </script>
 
