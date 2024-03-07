@@ -390,10 +390,16 @@ def sell_stock(request, company_symbol):
         quantity_to_sell = int(request.POST.get("quantity"))
         company = get_object_or_404(companyData, symbol=company_symbol)
 
-        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol,
-                                                     transaction_type='buy').first()
+        buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol,transaction_type='buy').first()
+        total_bought = Transaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='buy').aggregate(Sum('quantity'))['quantity__sum'] or 0
+        total_sold = Transaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='sell').aggregate(Sum('quantity'))['quantity__sum'] or 0
+        total_owned = total_bought - total_sold
+        print("total_bought:",total_bought)
+        print("total_sold",total_sold)
+        print("total_owned",total_owned)
+        print("quantity_to_sell",quantity_to_sell)
         print(buy_transaction)
-        if buy_transaction:
+        if quantity_to_sell <= total_owned and buy_transaction:
 
             transaction = Transaction(
                 user=user_email,
