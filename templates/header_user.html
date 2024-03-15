@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="/static/assets/css/OcOrato---Login-form-styles.css">
     <link rel="stylesheet" href="/static/assets/css/OcOrato---Login-form.css">
     <link rel="stylesheet" href="/static/assets/css/styles.css">
+    <style>
+        
+    </style>
     
     <script>
     history.pushState(null, null, location.href);
@@ -25,6 +28,7 @@
         history.go(1);
     };
 </script>
+    
 </head>
 
 <body>
@@ -45,7 +49,8 @@
                 <ul class="navbar-nav links">
                     <li class="nav-item"><a class="nav-link" href="{% url 'list' %}">Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'portfolio' %}">portfolio</a></li>    
-                    <li class="nav-item"><a class="nav-link" href="{% url 'payment' %}">Add money-Transaction history</a></li>   
+                    <li class="nav-item"><a class="nav-link" href="{% url 'payment' %}">Add money</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'transaction_history' %}">Transaction history</a></li>   
 {#                    <a class="dropdown-item" href="">Payments </a>#}
                     <li class="nav-item"><a class="nav-link" href="#"></a></li>
                     <li class="nav-item"></li>

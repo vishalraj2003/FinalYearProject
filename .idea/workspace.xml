@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="model updated">
+      <change afterPath="$PROJECT_DIR$/templates/transaction_history.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/djangoProject/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/djangoProject/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/assets/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/assets/css/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/header_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/header_user.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/payment.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/payment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/transaction.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/transaction.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/transaction_sell.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/transaction_sell.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,37 +46,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Django Server.djangoProject.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/hp/PycharmProjects/djangoProject/stockMarket&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Django Server.djangoProject.executor": "Run",
+    "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "django.template.preview.state": "SHOW_EDITOR",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/hp/PycharmProjects/djangoProject/templates",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hp\PycharmProjects\djangoProject\templates" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\stockMarket" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\credit_balance_update" />
-      <recent name="C:\Users\hp\PycharmProjects\djangoProject\templates" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\media\profile_pics" />
       <recent name="C:\Users\hp\PycharmProjects\djangoProject\static" />
     </key>
@@ -185,7 +192,11 @@
       <workItem from="1709384427830" duration="8674000" />
       <workItem from="1709401454395" duration="21400000" />
       <workItem from="1709451266837" duration="8650000" />
-      <workItem from="1709822452348" duration="1647000" />
+      <workItem from="1709822452348" duration="2556000" />
+      <workItem from="1710041914490" duration="202000" />
+      <workItem from="1710079852970" duration="1248000" />
+      <workItem from="1710520454239" duration="95000" />
+      <workItem from="1710520568320" duration="4323000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -451,7 +462,15 @@
       <option name="project" value="LOCAL" />
       <updated>1709463357623</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="model updated">
+      <option name="closed" value="true" />
+      <created>1709824205287</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1709824205287</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -490,7 +509,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
-          <line>712</line>
+          <line>800</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>

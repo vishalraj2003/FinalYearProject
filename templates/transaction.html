@@ -1,5 +1,6 @@
 {% include 'header_user.html' %}
 
+
 <div class="container-fluid">
         <div class="container d-flex justify-content-center" >
             <div class="row d-flex justify-content-center">
@@ -11,17 +12,17 @@
                   <hr style="background-color: #0f5132; height: 2px">
                       <div class="input-group ">
                           <div class="input-group-prepend">
-                            <span class="input-group-text bg-dark text-info" id="">Your balance</span>
+                            <span class="input-group-text fw-bolder" id="">Your balance</span>
                           </div>
-                          <input type="number" id="userBalance" class="form-control bg-primary fw-bolder" readonly placeholder="Your balance" value="{{ user.credit_balance }}">
+                          <input type="number" id="userBalance" class="form-control fw-bolder" style="background-color: #E5E5E5" readonly placeholder="Your balance" value="{{ user.credit_balance }}">
                         </div>
 {#                  </ul>#}
 {#                  <ul class="list-group list-group-flush">#}
                       <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text bg-dark text-info" id="">Current stock Price</span>
+                            <span class="input-group-text fw-bolder" id="">Current stock Price</span>
                           </div>
-                          <input type="number" class="form-control bg-primary fw-bolder" readonly placeholder="{{ company.quote_price }}">
+                          <input type="number" class="form-control fw-bolder" style="background-color: #E5E5E5" readonly placeholder="{{ company.quote_price }}">
                         </div>
 {#                  </ul>#}
 {#                  <ul class="list-group list-group-flush">#}
@@ -29,9 +30,9 @@
                       {% csrf_token %}
                       <div class="input-group">
                           <div class="input-group-prepend ">
-                            <span class="input-group-text bg-dark text-info" id="">Quantity:</span>
+                            <span class="input-group-text fw-bolder" id="">Quantity:</span>
                           </div>
-                          <input type="number" id="quantity" name="quantity" class="form-control bg-primary fw-bolder text-warning"  value="1" min="1" required>
+                          <input type="number" id="quantity" name="quantity" class="form-control fw-bolder "  value="1" min="1" style="background-color: #E5E5E5" required>
                         </div>
 {#                  </ul>#}
                   <hr style="background-color: #0f5132; height: 2px">

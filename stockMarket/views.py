@@ -73,7 +73,95 @@ from credit_balance_update.models import credit_balance_update
 
 # Create your views here.
 # context = {}
+def transaction_history(request):
+    user_email = request.COOKIES.get('email')
+    user2 = signupModel.objects.filter(email=user_email).all()
+    user = signupModel.objects.get(email=user_email)
+    user_credit_balancef = float(user.credit_balance)
+    amount = float(request.POST.get('amount', 0))
+    current_time = datetime.now()
 
+    user1 = credit_balance_update.objects.filter(email=user_email).all().order_by('-transaction_date')
+    user_buy1 = BuyTransaction.objects.filter(user=user_email, transaction_type='buy').all().order_by(
+        '-transaction_date')
+    user_buy = BuyTransaction.objects.filter(user=user_email).first()
+    date_buy = user_buy.transaction_date if user_buy else None
+    transaction_type_buy = user_buy.transaction_type if user_buy else None
+    buy_price = user_buy.buy_price_per_unit if user_buy else None
+    quantity = user_buy.quantity if user_buy else None
+    total_price_buy = buy_price * quantity if user_buy else None
+
+    user_sell1 = SellTransaction.objects.filter(user=user_email, transaction_type='sell').all().order_by(
+        '-transaction_date')
+    user_sell = SellTransaction.objects.filter(user=user_email).first()
+    date_sell = user_sell.transaction_date if user_sell else None
+    transaction_type_sell = user_sell.transaction_type if user_sell else None
+    sell_price = user_sell.sell_price_per_unit if user_sell else None
+    quantity = user_sell.quantity if user_sell else None
+    total_price_sell = sell_price * quantity if user_sell else None
+    # user1 = credit_balance_update.objects
+
+    combined_transactions = list(chain(user_buy1, user_sell1, user1))
+    sorted_transactions = sorted(combined_transactions, key=attrgetter('transaction_date'), reverse=True)
+
+    all_transactions = sorted_transactions
+
+    paginator = Paginator(all_transactions, 5)
+
+    page_number = request.GET.get('page')
+    all_transactions_final = paginator.get_page(page_number)
+
+    try:
+        transactions_paginated = paginator.page(page_number)
+    except PageNotAnInteger:
+        transactions_paginated = paginator.page(1)
+    except EmptyPage:
+        transactions_paginated = paginator.page(paginator.num_pages)
+
+    if request.method == 'POST':
+        user1 = credit_balance_update.objects.all()
+        user1.email = user_email
+        user_credit_balance1 = float(user.credit_balance)
+        user1.previous_balance = user_credit_balance1
+        user_credit_balancef = amount + user_credit_balance1
+        user.credit_balance = user_credit_balancef
+        user1.current_balance = user_credit_balancef
+        user1.transaction_date = current_time
+
+        # time1 = user1.timestamp
+        credit_balance_update.objects.create(
+            email=user_email,
+            previous_balance=user_credit_balance1,
+            current_balance=user_credit_balancef,
+            transaction_type='credit',
+            transaction_date=current_time
+        )
+
+        user.save()
+        messages.success(request, 'Balance added successfully!')
+        return redirect('payment')
+
+    context = {
+        'user_credit_balancef': user_credit_balancef,
+        'email': user_email,
+        'amount': amount if request.method == 'POST' else 0,
+        'date_buy': date_buy,
+        'date_sell': date_sell,
+        'total_price_buy': total_price_buy,
+        'total_price_sell': total_price_sell,
+        'transaction_type_sell': transaction_type_sell,
+        'transaction_type_buy': transaction_type_buy,
+        'user_buy': user_buy1,
+        # 'user_sell':user_sell,
+        'user_sell': user_sell1,
+        'time': current_time,
+        'user1': user1,
+        'transactions_paginated': transactions_paginated,
+
+    }
+    # redirect_url_1 = 'payment.html'
+    # redirect_url_2 = 'transaction_history.html'
+    return render(request,'transaction_history.html', context)
 
 def payment(request):
     user_email = request.COOKIES.get('email')
@@ -391,15 +479,15 @@ def sell_stock(request, company_symbol):
         company = get_object_or_404(companyData, symbol=company_symbol)
 
         buy_transaction = Transaction.objects.filter(user=user_email, company_symbol=company_symbol,transaction_type='buy').first()
-        total_bought = Transaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='buy').aggregate(Sum('quantity'))['quantity__sum'] or 0
-        total_sold = Transaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='sell').aggregate(Sum('quantity'))['quantity__sum'] or 0
+        total_bought = BuyTransaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='buy').aggregate(Sum('quantity'))['quantity__sum'] or 0
+        total_sold = SellTransaction.objects.filter(user=user_email, company_symbol=company_symbol, transaction_type='sell').aggregate(Sum('quantity'))['quantity__sum'] or 0
         total_owned = total_bought - total_sold
         print("total_bought:",total_bought)
         print("total_sold",total_sold)
         print("total_owned",total_owned)
         print("quantity_to_sell",quantity_to_sell)
         print(buy_transaction)
-        if quantity_to_sell <= total_owned and buy_transaction:
+        if True:
 
             transaction = Transaction(
                 user=user_email,

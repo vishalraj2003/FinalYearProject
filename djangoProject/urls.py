@@ -51,6 +51,7 @@ urlpatterns = [
     path('stock_details/<str:company_symbol>/', views.stock_details, name='stock_details'),
     path('traffic/', views.traffic_monitor, name='traffic'),
     path('payment/', views.payment, name='payment'),
+    path('transaction_history/', views.transaction_history, name='transaction_history'),
 
     # path('stock-prediction/<str:symbol>/', views.stock_prediction, name='stock_prediction'),
 ]
