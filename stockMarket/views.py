@@ -101,7 +101,7 @@ def transaction_history(request):
     total_price_sell = sell_price * quantity if user_sell else None
     # user1 = credit_balance_update.objects
 
-    combined_transactions = list(chain(user_buy1, user_sell1, user1))
+    combined_transactions = list(chain(user_buy1, user_sell1))
     sorted_transactions = sorted(combined_transactions, key=attrgetter('transaction_date'), reverse=True)
 
     all_transactions = sorted_transactions
@@ -191,7 +191,7 @@ def payment(request):
     total_price_sell = sell_price * quantity if user_sell else None
     # user1 = credit_balance_update.objects
 
-    combined_transactions = list(chain(user_buy1, user_sell1, user1))
+    combined_transactions = list(chain(user1))
     sorted_transactions = sorted(combined_transactions, key=attrgetter('transaction_date'), reverse=True)
 
     all_transactions = sorted_transactions
