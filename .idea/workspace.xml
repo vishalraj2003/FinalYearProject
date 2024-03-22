@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="065ee677-c01a-44f7-b604-302f86ec54ac" name="Changes" comment="model updated">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/stockMarket/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/stockMarket/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +49,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "django.template.preview.state": "SHOW_EDITOR",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "C:/Users/hp/PycharmProjects/djangoProject/templates",
+    "last_opened_file_path": "C:/Users/hp/PycharmProjects/djangoProject",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -191,7 +190,10 @@
       <workItem from="1710520454239" duration="95000" />
       <workItem from="1710520568320" duration="4605000" />
       <workItem from="1710569064967" duration="264000" />
-      <workItem from="1710569984459" duration="556000" />
+      <workItem from="1710569984459" duration="1237000" />
+      <workItem from="1711103054970" duration="37000" />
+      <workItem from="1711103425324" duration="149000" />
+      <workItem from="1711118200799" duration="139000" />
     </task>
     <task id="LOCAL-00001" summary="Authentication module done">
       <option name="closed" value="true" />
@@ -473,7 +475,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710524910404</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="model updated">
+      <option name="closed" value="true" />
+      <created>1710571016913</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1710571016913</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -512,8 +522,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
-          <line>800</line>
+          <line>794</line>
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/stockMarket/views.py</url>
+          <line>255</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
