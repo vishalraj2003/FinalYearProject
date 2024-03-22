@@ -753,7 +753,6 @@ def jump(request):
         'http://api.ipstack.com/' + ip + '?access_key=0c2c9d3722da795f2c6a6087504c3959'
     )
     rawData = response.json()
-
     continent = rawData['continent_name']
     country = rawData['country_name']
     city = rawData['city']
